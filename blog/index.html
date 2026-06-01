@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术博客 - 刘彬棋</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 20px;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+        /* 导航栏 */
+        .nav {
+            background: #2c3e50;
+            padding: 15px 20px;
+            margin: -20px -20px 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 20px;
+            font-size: 14px;
+        }
+        .nav a:hover { text-decoration: underline; }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .header h1 { color: #2c3e50; margin-bottom: 10px; }
+        .header p { color: #666; }
+        
+        .article-list {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .article-item {
+            padding: 20px 25px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+        .article-item:hover { background: #f8f9fa; }
+        .article-item:last-child { border-bottom: none; }
+        
+        .article-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-decoration: none;
+            display: block;
+        }
+        .article-title:hover { color: #3498db; }
+        
+        .article-meta {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        .article-meta span { margin-right: 15px; }
+        
+        .article-summary {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #ecf0f1;
+            padding: 3px 10px;
+            margin: 5px 5px 0 0;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .pager {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .pager a {
+            padding: 8px 16px;
+            background: white;
+            color: #3498db;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid #3498db;
+        }
+        .pager a:hover { background: #3498db; color: white; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="../index.html">🏠 首页</a>
+        <a href="index.html">📝 博客</a>
+        <a href="../channels.html">🎯 频道</a>
+    </div>
+
+    <div class="header">
+        <h1>📝 技术博客</h1>
+        <p>记录学习过程，分享技术心得</p>
+        <p style="margin-top:10px; font-size:14px; color:#999;">作者：刘斌奇 (liu-binqi)</p>
+    </div>
+
+    <div class="article-list">
+        <!-- 文章 1 -->
+        <div class="article-item">
+            <a href="01-http协议.html" class="article-title">HTTP 协议从入门到面试：Java 后端工程师必备</a>
+            <div class="article-meta">
+                <span>📅 2026-06-01</span>
+                <span>👁️ 阅读 128</span>
+                <span>⏱️ 约 15 分钟</span>
+            </div>
+            <div class="article-summary">
+                系统梳理 HTTP 协议核心知识点，包括请求方法、状态码、Cookie/Session/JWT 机制，以及 Spring Boot 中的实际应用。附面试高频考点速查表。
+            </div>
+            <div>
+                <span class="tag">HTTP</span>
+                <span class="tag">面试</span>
+                <span class="tag">Java</span>
+                <span class="tag">网络</span>
+            </div>
+        </div>
+
+        <!-- 文章 2 -->
+        <div class="article-item">
+            <a href="#" class="article-title">Spring Boot 快速入门：从零搭建第一个 Web 项目</a>
+            <div class="article-meta">
+                <span>📅 2026-05-28</span>
+                <span>👁️ 阅读 86</span>
+                <span>⏱️ 约 20 分钟</span>
+            </div>
+            <div class="article-summary">
+                手把手教你用 Spring Initializr 创建项目，配置 MySQL 数据库，实现 RESTful API，以及常见踩坑记录。
+            </div>
+            <div>
+                <span class="tag">Spring Boot</span>
+                <span class="tag">后端</span>
+                <span class="tag">教程</span>
+            </div>
+        </div>
+
+        <!-- 文章 3 -->
+        <div class="article-item">
+            <a href="#" class="article-title">我的 Java 学习路线：从应届生到初级工程师</a>
+            <div class="article-meta">
+                <span>📅 2026-05-20</span>
+                <span>👁️ 阅读 256</span>
+                <span>⏱️ 约 10 分钟</span>
+            </div>
+            <div class="article-summary">
+                整理大学四年 + 求职期间的学习路径，包括核心技术栈、项目实战、面试准备时间线。适合计算机专业应届生参考。
+            </div>
+            <div>
+                <span class="tag">学习路线</span>
+                <span class="tag">应届生</span>
+                <span class="tag">求职</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="pager">
+        <a href="#">← 上一页</a>
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">下一页 →</a>
+    </div>
+</body>
+</html>
