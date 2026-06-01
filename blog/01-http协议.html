@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP 协议从入门到面试 - 刘斌奇</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .nav {
+            background: #2c3e50;
+            padding: 15px 20px;
+            margin: -20px -20px 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 20px;
+            font-size: 14px;
+        }
+        
+        .article-header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .article-header h1 { 
+            color: #2c3e50; 
+            font-size: 28px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .article-meta {
+            color: #999;
+            font-size: 14px;
+        }
+        .article-meta span { margin-right: 20px; }
+        
+        .article-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        h2 { 
+            color: #2c3e50; 
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        h3 { color: #34495e; margin: 25px 0 10px; }
+        
+        p { margin-bottom: 15px; }
+        
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+        }
+        code { 
+            background: #f0f0f0; 
+            padding: 2px 6px; 
+            border-radius: 3px;
+            font-family: "Consolas", monospace;
+            color: #c7254e;
+        }
+        pre code { background: none; padding: 0; color: #333; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background: #f8f9fa; font-weight: 600; }
+        
+        .tip {
+            background: #e8f6f3;
+            border-left: 4px solid #1abc9c;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .warning {
+            background: #fdf2e9;
+            border-left: 4px solid #e67e22;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .toc h3 { margin-top: 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 5px 0; }
+        .toc a { color: #3498db; text-decoration: none; }
+        
+        .pager {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .pager a {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        .pager a:hover { background: #2980b9; }
+        
+        .back-to-list {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .back-to-list:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="../index.html">🏠 首页</a>
+        <a href="index.html">📝 博客</a>
+        <a href="../channels.html">🎯 频道</a>
+    </div>
+
+    <a href="index.html" class="back-to-list">← 返回博客列表</a>
+
+    <div class="article-header">
+        <h1>HTTP 协议从入门到面试：Java 后端工程师必备</h1>
+        <div class="article-meta">
+            <span>📅 2026-06-01</span>
+            <span>✍️ 刘斌奇 (liu-binqi)</span>
+            <span>⏱️ 阅读约 15 分钟</span>
+            <span>👁️ 128 次阅读</span>
+        </div>
+    </div>
+
+    <div class="article-content">
+        <!-- 目录 -->
+        <div class="toc">
+            <h3>📋 目录</h3>
+            <ul>
+                <li><a href="#what">一、HTTP 是什么</a></li>
+                <li><a href="#structure">二、HTTP 报文结构</a></li>
+                <li><a href="#methods">三、HTTP 方法</a></li>
+                <li><a href="#status">四、状态码</a></li>
+                <li><a href="#state">五、状态保持机制</a></li>
+                <li><a href="#interview">六、面试高频考点</a></li>
+            </ul>
+        </div>
+
+        <h2 id="what">一、HTTP 是什么</h2>
+        <p>HTTP（HyperText Transfer Protocol，超文本传输协议）是客户端与服务器之间通信的应用层协议，基于请求-响应模型，默认端口 80（HTTPS 为 443）。</p>
+        
+        <div class="tip">
+            💡 <strong>核心特点</strong>：无状态、请求-响应、半双工（HTTP/1.1 支持持久连接）
+        </div>
+
+        <h2 id="structure">二、HTTP 报文结构</h2>
+        <p>HTTP 报文分为请求报文和响应报文，结构类似：</p>
+        <pre><code>请求行/状态行
+请求头/响应头（键值对）
+空行
+请求体/响应体（可选）</code></pre>
+
+        <h2 id="methods">三、HTTP 方法</h2>
+        <table>
+            <tr>
+                <th>方法</th>
+                <th>语义</th>
+                <th>幂等性</th>
+                <th>安全性</th>
+            </tr>
+            <tr>
+                <td><code>GET</code></td>
+                <td>获取资源</td>
+                <td>✅ 是</td>
+                <td>✅ 是</td>
+            </tr>
+            <tr>
+                <td><code>POST</code></td>
+                <td>创建资源</td>
+                <td>❌ 否</td>
+                <td>❌ 否</td>
+            </tr>
+            <tr>
+                <td><code>PUT</code></td>
+                <td>全量更新</td>
+                <td>✅ 是</td>
+                <td>❌ 否</td>
+            </tr>
+            <tr>
+                <td><code>DELETE</code></td>
+                <td>删除资源</td>
+                <td>✅ 是</td>
+                <td>❌ 否</td>
+            </tr>
+        </table>
+
+        <h2 id="status">四、状态码</h2>
+        <p>状态码是面试重灾区，必须倒背如流：</p>
+        <table>
+            <tr><th>类别</th><th>必背码</th><th>含义</th><th>场景</th></tr>
+            <tr><td>2xx</td><td>200</td><td>OK</td><td>正常返回</td></tr>
+            <tr><td>2xx</td><td>201</td><td>Created</td><td>POST 创建成功</td></tr>
+            <tr><td>3xx</td><td>301</td><td>永久重定向</td><td>SEO 用</td></tr>
+            <tr><td>3xx</td><td>302</td><td>临时重定向</td><td>登录后跳转</td></tr>
+            <tr><td>4xx</td><td>400</td><td>Bad Request</td><td>参数错误</td></tr>
+            <tr><td>4xx</td><td>401</td><td>Unauthorized</td><td>未认证</td></tr>
+            <tr><td>4xx</td><td>403</td><td>Forbidden</td><td>无权限</td></tr>
+            <tr><td>4xx</td><td>404</td><td>Not Found</td><td>资源不存在</td></tr>
+            <tr><td>5xx</td><td>500</td><td>Internal Error</td><td>服务端异常</td></tr>
+        </table>
+
+        <h2 id="state">五、状态保持机制</h2>
+        <p>HTTP 无状态，需要额外机制维持状态：</p>
+        
+        <h3>Cookie vs Session vs JWT</h3>
+        <table>
+            <tr><th>机制</th><th>存储位置</th><th>安全性</th><th>适用场景</th></tr>
+            <tr><td>Cookie</td><td>客户端浏览器</td><td>低</td><td>记住登录状态</td></tr>
+            <tr><td>Session</td><td>服务端内存/Redis</td><td>高</td><td>传统 MVC 登录</td></tr>
+            <tr><td>JWT</td><td>客户端（Header 携带）</td><td>中</td><td>前后端分离、微服务</td></tr>
+        </table>
+
+        <div class="highlight">
+            ⭐ <strong>面试陷阱</strong>：Session 和 Cookie 不是对立关系，Session 通常依赖 Cookie 传递 sessionId。
+        </div>
+
+        <h2 id="interview">六、面试高频考点</h2>
+        <div class="warning">
+            ⚠️ 以下 10 道题覆盖 90% 的 Java 初级 HTTP 面试：
+        </div>
+        <ol>
+            <li>GET 和 POST 的区别？（幂等性、安全性、Body 传参）</li>
+            <li>301 和 302 的区别？（永久 vs 临时重定向）</li>
+            <li>401 和 403 的区别？（未认证 vs 无权限）</li>
+            <li>forward 和 redirect 的区别？</li>
+            <li>Cookie 和 Session 的区别？</li>
+            <li>什么是 RESTful API？</li>
+            <li>HTTP 和 HTTPS 的区别？</li>
+            <li>HTTPS 加密流程？</li>
+            <li>什么是 HTTP 无状态？如何解决？</li>
+            <li>输入 URL 到页面显示的过程？</li>
+        </ol>
+
+        <div class="tip">
+            📌 <strong>自检标准</strong>：能清晰解释 GET/POST 区别、准确说出 10 个以上状态码、能在 Spring Boot 中写出规范的 RESTful 接口。
+        </div>
+    </div>
+
+    <div class="pager">
+        <a href="index.html">← 返回列表</a>
+        <a href="#">下一篇：Spring Boot 快速入门 →</a>
+    </div>
+</body>
+</html>
