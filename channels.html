@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的频道矩阵 - 刘斌奇</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            line-height: 1.6; 
+            color: #333;
+            background: #f5f7fa;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 16px; }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 32px; font-weight: bold; }
+        .stat-label { font-size: 14px; opacity: 0.8; }
+        
+        .category {
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .category-header {
+            padding: 18px 24px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+        .category-header:hover { background: #f8f9fa; }
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .category-icon { font-size: 22px; }
+        .toggle-icon {
+            transition: transform 0.3s;
+            color: #999;
+            font-size: 20px;
+        }
+        .category.expanded .toggle-icon { transform: rotate(180deg); }
+        
+        .channel-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .category.expanded .channel-list { max-height: 2000px; }
+        
+        .channel-item {
+            padding: 14px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .channel-item:hover { background: #f8f9fa; }
+        .channel-item:last-child { border-bottom: none; }
+        
+        .channel-info { flex: 1; }
+        .channel-name { font-weight: 500; color: #333; margin-bottom: 4px; }
+        .channel-desc { font-size: 13px; color: #999; }
+        
+        .join-btn {
+            padding: 8px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .join-btn:hover { background: #5a6fd6; }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        .back-link:hover { text-decoration: underline; }
+        
+        @media (max-width: 600px) {
+            .stats { gap: 20px; }
+            .stat-number { font-size: 24px; }
+            .channel-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .join-btn { align-self: flex-end; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 我的频道矩阵</h1>
+        <p>运营 20+ 垂直社区，覆盖技术、游戏、生活、文化等多个领域</p>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">20+</div>
+                <div class="stat-label">垂直频道</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">6</div>
+                <div class="stat-label">核心分类</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">日活</div>
+                <div class="stat-label">持续增长</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 技术/学习 -->
+    <div class="category expanded">
+        <div class="category-header" onclick="toggle(this)">
+            <div class="category-title">
+                <span class="category-icon">💻</span>
+                <span>技术 & 学习（3个）</span>
+            </div>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="channel-list">
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">代码构界</div>
+                    <div class="channel-desc">编程技术交流与代码分享</div>
+                </div>
+                <a href="https://pd.qq.com/s/fop2kncyb?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">AI创世纪</div>
+                    <div class="channel-desc">AI工具、AIGC应用与前沿技术</div>
+                </div>
+                <a href="https://pd.qq.com/s/1urm9imt1?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">资源栈</div>
+                    <div class="channel-desc">开发资源、工具推荐与技术资料</div>
+                </div>
+                <a href="https://pd.qq.com/s/emnn6iskd?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 游戏 -->
+    <div class="category">
+        <div class="category-header" onclick="toggle(this)">
+            <div class="category-title">
+                <span class="category-icon">🎮</span>
+                <span>游戏社区（4个）</span>
+            </div>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="channel-list">
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">使命召唤梓源区</div>
+                    <div class="channel-desc">COD 玩家交流与组队</div>
+                </div>
+                <a href="https://pd.qq.com/s/85hkibiju?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">三角洲梓源区</div>
+                    <div class="channel-desc">三角洲行动玩家社区</div>
+                </div>
+                <a href="https://pd.qq.com/s/610ujxeyg?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">超自然行动组基地</div>
+                    <div class="channel-desc">超自然行动组游戏交流</div>
+                </div>
+                <a href="https://pd.qq.com/s/h0mgqhwpq?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">迷你世界QQ基地</div>
+                    <div class="channel-desc">迷你世界玩家聚集地</div>
+                </div>
+                <a href="https://pd.qq.com/s/7wpkfqbf5?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 生活/兴趣 -->
+    <div class="category">
+        <div class="category-header" onclick="toggle(this)">
+            <div class="category-title">
+                <span class="category-icon">🌱</span>
+                <span>生活 & 成长（5个）</span>
+            </div>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="channel-list">
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">健康炼体</div>
+                    <div class="channel-desc">健身、运动与健康生活</div>
+                </div>
+                <a href="https://pd.qq.com/s/gj05x5lox?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">打卡自律社</div>
+                    <div class="channel-desc">习惯养成与每日打卡</div>
+                </div>
+                <a href="https://pd.qq.com/s/9lgk462ri?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">日常记录册</div>
+                    <div class="channel-desc">生活点滴与日常分享</div>
+                </div>
+                <a href="https://pd.qq.com/s/72ni2sy6v?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">蚌埠青年成长社</div>
+                    <div class="channel-desc">本地青年交流与成长</div>
+                </div>
+                <a href="https://pd.qq.com/s/cqu6e8bfs?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">人类爱情研究基地</div>
+                    <div class="channel-desc">情感交流与恋爱话题</div>
+                </div>
+                <a href="https://pd.qq.com/s/cxcv65wa0?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二次元/文化 -->
+    <div class="category">
+        <div class="category-header" onclick="toggle(this)">
+            <div class="category-title">
+                <span class="category-icon">🎨</span>
+                <span>二次元 & 文化（4个）</span>
+            </div>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="channel-list">
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">COSplay二次元交流社区</div>
+                    <div class="channel-desc">COSPLAY、漫展与同好交流</div>
+                </div>
+                <a href="https://pd.qq.com/s/ekneeqi4f?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">番剧爱好者</div>
+                    <div class="channel-desc">动画推荐与番剧讨论</div>
+                </div>
+                <a href="https://pd.qq.com/s/6q7t78fcs?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">潮玩图界</div>
+                    <div class="channel-desc">潮流玩具与收藏分享</div>
+                </div>
+                <a href="https://pd.qq.com/s/4iiwk9j39?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">梗图开心窝</div>
+                    <div class="channel-desc">表情包、梗图与轻松话题</div>
+                </div>
+                <a href="https://pd.qq.com/s/9nuwrgn5x?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 资源/工具 -->
+    <div class="category">
+        <div class="category-header" onclick="toggle(this)">
+            <div class="category-title">
+                <span class="category-icon">🛠️</span>
+                <span>资源 & 工具（4个）</span>
+            </div>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="channel-list">
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">梓源表情梦工厂</div>
+                    <div class="channel-desc">表情包制作与分享</div>
+                </div>
+                <a href="https://pd.qq.com/s/w8c8ecjs?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">梓源文案馆</div>
+                    <div class="channel-desc">文案创作与素材分享</div>
+                </div>
+                <a href="https://pd.qq.com/s/ea5u4d7cd?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">梓源投资圈</div>
+                    <div class="channel-desc">理财交流与投资讨论</div>
+                </div>
+                <a href="https://pd.qq.com/s/4v6m6kdbs?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">网络骗局墙</div>
+                    <div class="channel-desc">反诈科普与骗局曝光</div>
+                </div>
+                <a href="https://pd.qq.com/s/4o8fgfr6e?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 社交 -->
+    <div class="category">
+        <div class="category-header" onclick="toggle(this)">
+            <div class="category-title">
+                <span class="category-icon">👥</span>
+                <span>社交（2个）</span>
+            </div>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="channel-list">
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">全网交友扩列墙</div>
+                    <div class="channel-desc">兴趣交友与社交扩列</div>
+                </div>
+                <a href="https://pd.qq.com/s/fq3yluvvy?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+            <div class="channel-item">
+                <div class="channel-info">
+                    <div class="channel-name">初高中生交流社区</div>
+                    <div class="channel-desc">学生群体交流与互助</div>
+                </div>
+                <a href="https://pd.qq.com/s/blpn8ly8y?b=9" target="_blank" class="join-btn">加入</a>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-link">← 返回主页</a>
+
+    <script>
+        function toggle(header) {
+            const category = header.parentElement;
+            category.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>
