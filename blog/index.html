@@ -15,7 +15,6 @@
             color: #333;
             background: #f5f7fa;
         }
-        /* 导航栏 */
         .nav {
             background: #2c3e50;
             padding: 15px 20px;
@@ -29,7 +28,7 @@
             font-size: 14px;
         }
         .nav a:hover { text-decoration: underline; }
-        
+
         .header {
             text-align: center;
             padding: 30px;
@@ -40,7 +39,7 @@
         }
         .header h1 { color: #2c3e50; margin-bottom: 10px; }
         .header p { color: #666; }
-        
+
         .article-list {
             background: white;
             border-radius: 12px;
@@ -54,7 +53,7 @@
         }
         .article-item:hover { background: #f8f9fa; }
         .article-item:last-child { border-bottom: none; }
-        
+
         .article-title {
             font-size: 18px;
             font-weight: 600;
@@ -64,20 +63,20 @@
             display: block;
         }
         .article-title:hover { color: #3498db; }
-        
+
         .article-meta {
             font-size: 13px;
             color: #999;
             margin-bottom: 10px;
         }
         .article-meta span { margin-right: 15px; }
-        
+
         .article-summary {
             color: #666;
             font-size: 14px;
             line-height: 1.6;
         }
-        
+
         .tag {
             display: inline-block;
             background: #ecf0f1;
@@ -87,7 +86,7 @@
             font-size: 12px;
             color: #666;
         }
-        
+
         .pager {
             display: flex;
             justify-content: center;
@@ -104,9 +103,15 @@
         }
         .pager a:hover { background: #3498db; color: white; }
     </style>
+<base target="_blank">
 </head>
 <body>
-    
+    <div class="nav">
+        <a href="../index.html">🏠 首页</a>
+        <a href="index.html">📝 博客</a>
+        <a href="../channels.html">🎯 频道</a>
+    </div>
+
     <div class="header">
         <h1>📝 技术博客</h1>
         <p>记录学习过程，分享技术心得</p>
@@ -114,7 +119,7 @@
     </div>
 
     <div class="article-list">
-        <!-- 文章 1 -->
+        <!-- 文章 1：HTTP协议 -->
         <div class="article-item">
             <a href="01-http协议.html" class="article-title">HTTP 协议从入门到面试：Java 后端工程师必备</a>
             <div class="article-meta">
@@ -133,7 +138,7 @@
             </div>
         </div>
 
-        <!-- 文章 2 -->
+        <!-- 文章 2：Spring Boot（占位） -->
         <div class="article-item">
             <a href="#" class="article-title">Spring Boot 快速入门：从零搭建第一个 Web 项目</a>
             <div class="article-meta">
@@ -151,7 +156,7 @@
             </div>
         </div>
 
-        <!-- 文章 3 -->
+        <!-- 文章 3：Java学习路线（占位） -->
         <div class="article-item">
             <a href="#" class="article-title">我的 Java 学习路线：从应届生到初级工程师</a>
             <div class="article-meta">
@@ -169,7 +174,7 @@
             </div>
         </div>
 
-                <!-- 文章 4 -->
+        <!-- 文章 4：域名 -->
         <div class="article-item">
             <a href="02-域名能做什么.html" class="article-title">一个域名能做什么？从 ziyuanzhan.top 说起</a>
             <div class="article-meta">
@@ -186,6 +191,61 @@
                 <span class="tag">建站</span>
             </div>
         </div>
+
+        <!-- 文章 5：Windows文件夹结构（新增） -->
+        <div class="article-item">
+            <a href="03-Windows软件环境规范.html" class="article-title">Windows 软件与开发环境文件夹结构规范</a>
+            <div class="article-meta">
+                <span>📅 2026-06-02</span>
+                <span>👁️ 阅读 0</span>
+                <span>⏱️ 约 8 分钟</span>
+            </div>
+            <div class="article-summary">
+                从 64 位识别到 Portable 绿色版管理，再到 DevEnv/Projects/Data 四级文件夹结构设计，附 ByLifeCycle vs ByLanguage 项目分类判断法。
+            </div>
+            <div>
+                <span class="tag">Windows</span>
+                <span class="tag">文件管理</span>
+                <span class="tag">规范</span>
+            </div>
+        </div>
+
+        <!-- 文章 6：Git安装与推送（新增） -->
+        <div class="article-item">
+            <a href="04-Git安装与GitHub推送.html" class="article-title">Git 安装配置与 GitHub 推送完全指南</a>
+            <div class="article-meta">
+                <span>📅 2026-06-02</span>
+                <span>👁️ 阅读 0</span>
+                <span>⏱️ 约 12 分钟</span>
+            </div>
+            <div class="article-summary">
+                Portable Git 安装、环境变量 PATH 配置、身份设置、git clone 本地留存必要性，以及 add → commit → push 标准工作流与常用命令速查。
+            </div>
+            <div>
+                <span class="tag">Git</span>
+                <span class="tag">GitHub</span>
+                <span class="tag">教程</span>
+            </div>
+        </div>
+
+        <!-- 文章 7：GitHub邮箱隐私（新增） -->
+        <div class="article-item">
+            <a href="05-GitHub邮箱隐私与GH007.html" class="article-title">GitHub 邮箱隐私配置与 GH007 错误解决</a>
+            <div class="article-meta">
+                <span>📅 2026-06-02</span>
+                <span>👁️ 阅读 0</span>
+                <span>⏱️ 约 10 分钟</span>
+            </div>
+            <div class="article-summary">
+                详解 GitHub 多邮箱机制、主邮箱与备用邮箱分工、noreply 隐私邮箱配置，以及 GH007 隐私保护拦截的完整解决方案。
+            </div>
+            <div>
+                <span class="tag">GitHub</span>
+                <span class="tag">隐私</span>
+                <span class="tag">错误处理</span>
+            </div>
+        </div>
+    </div>
 
     <div class="pager">
         <a href="#">← 上一页</a>
