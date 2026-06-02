@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 软件与开发环境文件夹结构规范 - 资源站</title>
+    <style>
+        body { max-width: 800px; margin: 40px auto; padding: 0 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.8; color: #333; }
+        h1 { font-size: 28px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        h2 { font-size: 22px; margin-top: 40px; color: #2c3e50; }
+        h3 { font-size: 18px; margin-top: 30px; color: #34495e; }
+        .meta { color: #888; font-size: 14px; margin-bottom: 30px; }
+        .tag { display: inline-block; background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-right: 6px; }
+        pre { background: #f6f8fa; padding: 16px; overflow-x: auto; border-radius: 6px; font-size: 14px; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: Consolas, Monaco, monospace; font-size: 14px; }
+        pre code { background: none; padding: 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f6f8fa; }
+        ul { padding-left: 20px; }
+        li { margin: 6px 0; }
+        blockquote { border-left: 4px solid #ddd; padding-left: 16px; color: #666; margin: 20px 0; }
+        a { color: #0366d6; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <article>
+        <h1>Windows 软件与开发环境文件夹结构规范</h1>
+        <div class="meta">2026-06-02 | <span class="tag">Windows</span> <span class="tag">文件管理</span> <span class="tag">开发环境</span> <span class="tag">规范</span></div>
+        <div class="content">
+<h2>一、64 位与 32 位快速识别</h2>
+
+<table>
+<thead><tr><th>标识</th><th>含义</th></tr></thead>
+<tbody>
+<tr><td><strong>x64 / amd64 / x86_64</strong></td><td>64 位</td></tr>
+<tr><td><strong>x86 / i386 / i686</strong></td><td>32 位</td></tr>
+</tbody></table>
+
+<p>下载页提示 <code>Windows | amd64</code>，推荐选择 <strong>x64</strong> 版本即可。</p>
+
+<h2>二、Portable（绿色版）与安装版的选择</h2>
+
+<table>
+<thead><tr><th>特性</th><th>Portable</th><th>安装版</th></tr></thead>
+<tbody>
+<tr><td>控制面板显示</td><td>❌ 不显示</td><td>✅ 显示</td></tr>
+<tr><td>注册表写入</td><td>❌ 无</td><td>✅ 有</td></tr>
+<tr><td>环境变量</td><td>需手动添加</td><td>可能自动添加</td></tr>
+<tr><td>重装系统后</td><td>直接可用</td><td>需重新安装</td></tr>
+<tr><td>多版本共存</td><td>方便</td><td>麻烦</td></tr>
+</tbody></table>
+
+<strong>建议</strong>：日常工具用 Portable，需要系统深度集成的（如 Office）用安装版。
+
+<h2>三、推荐文件夹结构</h2>
+
+<pre><code>D:\
+├── Apps\
+│   ├── Portable\          ← 绿色软件（Bandizip、Git 等）
+│   └── ProgramFiles\      ← 安装版软件（IDEA、Chrome 等）
+│
+├── DevEnv\                 ← 开发工具链（编译器/运行时）
+│   ├── Java\jdk-21\
+│   ├── Python\python-3.11\
+│   ├── Nodejs\
+│   └── Maven\
+│
+├── Projects\               ← 自己写的代码
+│   └── ByLifeCycle\
+│       ├── 01-Graduation\
+│       ├── 02-Internship\
+│       ├── 03-Personal\
+│       │   ├── Portfolio\   ← 博客、作品集
+│       │   ├── Tools\       ← 实用工具/脚本
+│       │   └── Experiments\ ← 技术实验
+│       └── 05-Archive\
+│
+└── Data\                   ← 文档、笔记、云盘同步</code></pre>
+
+<h2>四、关键区分原则</h2>
+
+<table>
+<thead><tr><th>放哪</th><th>判断标准</th><th>例子</th></tr></thead>
+<tbody>
+<tr><td><strong>Apps</strong></td><td>直接使用的应用程序</td><td>Bandizip、Everything</td></tr>
+<tr><td><strong>DevEnv</strong></td><td>代码运行依赖的底层支持</td><td>JDK、Python、Node.js</td></tr>
+<tr><td><strong>Projects</strong></td><td>自己写的项目代码</td><td>博客、爬虫、毕业设计</td></tr>
+</tbody></table>
+
+<strong>注意</strong>：Git 是代码管理工具，不是运行时，放 <code>Apps\Portable\Git\</code>。
+
+<h2>五、项目分类：ByLifeCycle vs ByLanguage</h2>
+
+<table>
+<thead><tr><th>维度</th><th>ByLifeCycle</th><th>ByLanguage</th></tr></thead>
+<tbody>
+<tr><td>适用</td><td>有完整生命周期的项目</td><td>零散学习代码</td></tr>
+<tr><td>判断标准</td><td>有 README、有目标、有交付、可展示</td><td>语法练习、HelloWorld、课程作业</td></tr>
+<tr><td>路径示例</td><td><code>Projects\ByLifeCycle\03-Personal\Portfolio\</code></td><td><code>Projects\ByLanguage\Java\</code></td></tr>
+</tbody></table>
+
+<strong>快速判断</strong>：有 2 个以上"是" → ByLifeCycle；基本全"否" → ByLanguage。
+        </div>
+    </article>
+</body>
+</html>
