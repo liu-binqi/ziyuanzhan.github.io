@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    { "id": "刘彬棋", "group": "center", "level": 100, "desc": "全栈开发工程师 | 热爱技术，持续学习" },
+    
+    { "id": "JavaScript", "group": "lang", "level": 90, "desc": "ES6+，异步编程，闭包，原型链" },
+    { "id": "Python", "group": "lang", "level": 85, "desc": "数据分析，自动化脚本，Flask/FastAPI" },
+    { "id": "Java", "group": "lang", "level": 75, "desc": "Spring Boot，多线程，JVM 调优基础" },
+    { "id": "C/C++", "group": "lang", "level": 70, "desc": "数据结构，算法竞赛，系统编程基础" },
+    { "id": "SQL", "group": "lang", "level": 80, "desc": "复杂查询优化，索引设计，事务管理" },
+    { "id": "HTML/CSS", "group": "lang", "level": 95, "desc": "语义化标签，Flex/Grid，响应式设计，动画" },
+    
+    { "id": "React", "group": "frontend", "level": 85, "desc": "Hooks，Redux，Next.js，性能优化" },
+    { "id": "Vue.js", "group": "frontend", "level": 80, "desc": "Vue3 Composition API，Pinia，Nuxt.js" },
+    { "id": "D3.js", "group": "frontend", "level": 75, "desc": "数据可视化，力导向图，交互式图表" },
+    { "id": "Tailwind", "group": "frontend", "level": 90, "desc": "原子化 CSS，自定义主题，响应式工具类" },
+    { "id": "TypeScript", "group": "frontend", "level": 82, "desc": "类型系统，泛型，装饰器，类型推断" },
+    { "id": "Webpack/Vite", "group": "frontend", "level": 78, "desc": "打包优化，代码分割，热更新配置" },
+    
+    { "id": "Node.js", "group": "backend", "level": 80, "desc": "Express/Koa，事件循环，Stream，Buffer" },
+    { "id": "Spring Boot", "group": "backend", "level": 72, "desc": "RESTful API，AOP，事务管理，微服务入门" },
+    { "id": "MySQL", "group": "backend", "level": 78, "desc": "表设计，慢查询优化，主从复制" },
+    { "id": "Redis", "group": "backend", "level": 75, "desc": "缓存策略，持久化，分布式锁，Pub/Sub" },
+    { "id": "MongoDB", "group": "backend", "level": 65, "desc": "文档模型，聚合管道，索引优化" },
+    { "id": "Docker", "group": "backend", "level": 70, "desc": "容器化，Dockerfile，Compose，镜像优化" },
+    
+    { "id": "Git", "group": "devops", "level": 88, "desc": "分支策略，Rebase，Cherry-pick，CI/CD 集成" },
+    { "id": "Linux", "group": "devops", "level": 82, "desc": "Shell 脚本，进程管理，系统调优，网络配置" },
+    { "id": "Nginx", "group": "devops", "level": 75, "desc": "反向代理，负载均衡，SSL，缓存配置" },
+    { "id": "GitHub Actions", "group": "devops", "level": 70, "desc": "自动化部署，工作流编排，矩阵构建" },
+    
+    { "id": "机器学习", "group": "ai", "level": 60, "desc": "监督/无监督学习，特征工程，模型评估" },
+    { "id": "深度学习", "group": "ai", "level": 55, "desc": "CNN，RNN 基础，PyTorch 入门" },
+    { "id": "NLP", "group": "ai", "level": 58, "desc": "文本分类，命名实体识别，Transformer 基础" },
+    { "id": "Pandas", "group": "ai", "level": 72, "desc": "数据清洗，透视表，时间序列处理" },
+    { "id": "OpenAI API", "group": "ai", "level": 80, "desc": "Prompt Engineering，Function Calling，RAG 基础" },
+    
+    { "id": "技术写作", "group": "soft", "level": 85, "desc": "技术博客，文档编写，知识沉淀" },
+    { "id": "项目管理", "group": "soft", "level": 70, "desc": "敏捷开发，任务拆解，进度把控" },
+    { "id": "团队协作", "group": "soft", "level": 88, "desc": "Code Review，技术分享，跨部门沟通" },
+    { "id": "问题解决", "group": "soft", "level": 90, "desc": "Debug 思路，根因分析，系统性思维" }
+  ],
+  "links": [
+    { "source": "刘彬棋", "target": "JavaScript" },
+    { "source": "刘彬棋", "target": "Python" },
+    { "source": "刘彬棋", "target": "React" },
+    { "source": "刘彬棋", "target": "Node.js" },
+    { "source": "刘彬棋", "target": "Git" },
+    { "source": "刘彬棋", "target": "机器学习" },
+    { "source": "刘彬棋", "target": "技术写作" },
+    
+    { "source": "JavaScript", "target": "TypeScript" },
+    { "source": "JavaScript", "target": "HTML/CSS" },
+    { "source": "JavaScript", "target": "Node.js" },
+    { "source": "Python", "target": "机器学习" },
+    { "source": "Python", "target": "Pandas" },
+    { "source": "Python", "target": "NLP" },
+    { "source": "Java", "target": "Spring Boot" },
+    { "source": "SQL", "target": "MySQL" },
+    { "source": "SQL", "target": "Redis" },
+    { "source": "SQL", "target": "MongoDB" },
+    
+    { "source": "React", "target": "TypeScript" },
+    { "source": "React", "target": "Webpack/Vite" },
+    { "source": "React", "target": "D3.js" },
+    { "source": "Vue.js", "target": "TypeScript" },
+    { "source": "Vue.js", "target": "Webpack/Vite" },
+    { "source": "Tailwind", "target": "HTML/CSS" },
+    { "source": "HTML/CSS", "target": "D3.js" },
+    
+    { "source": "Node.js", "target": "Docker" },
+    { "source": "Spring Boot", "target": "MySQL" },
+    { "source": "Spring Boot", "target": "Redis" },
+    { "source": "Spring Boot", "target": "Docker" },
+    { "source": "MySQL", "target": "Redis" },
+    { "source": "Docker", "target": "Nginx" },
+    
+    { "source": "Git", "target": "GitHub Actions" },
+    { "source": "Git", "target": "Linux" },
+    { "source": "Linux", "target": "Nginx" },
+    { "source": "Linux", "target": "Docker" },
+    
+    { "source": "机器学习", "target": "深度学习" },
+    { "source": "机器学习", "target": "Pandas" },
+    { "source": "深度学习", "target": "NLP" },
+    { "source": "NLP", "target": "OpenAI API" },
+    { "source": "OpenAI API", "target": "Python" },
+    
+    { "source": "技术写作", "target": "团队协作" },
+    { "source": "团队协作", "target": "项目管理" },
+    { "source": "问题解决", "target": "技术写作" },
+    { "source": "问题解决", "target": "团队协作" }
+  ]
+}
