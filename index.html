@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>刘彬棋 - Java 后端开发工程师</title>
+    <title>刘彬棋 - Java 开发工程师</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
             background: #0f172a;
             color: #e2e8f0;
             line-height: 1.6;
         }
-        
+
         /* 导航栏 */
         .navbar {
             position: fixed;
@@ -48,7 +48,7 @@
             transition: color 0.3s;
         }
         .nav-links a:hover { color: #60a5fa; }
-        
+
         /* Hero 区域 */
         .hero {
             padding: 140px 20px 80px;
@@ -71,14 +71,14 @@
             0%, 100% { transform: scale(1); opacity: 0.5; }
             50% { transform: scale(1.1); opacity: 0.8; }
         }
-        
+
         .hero-content {
             position: relative;
             z-index: 1;
             max-width: 700px;
             margin: 0 auto;
         }
-        
+
         /* 头像 */
         .avatar {
             width: 120px;
@@ -93,7 +93,7 @@
             border: 4px solid rgba(96,165,250,0.3);
             box-shadow: 0 0 40px rgba(96,165,250,0.2);
         }
-        
+
         .hero h1 {
             font-size: 42px;
             font-weight: 700;
@@ -114,7 +114,7 @@
             font-size: 16px;
             margin-bottom: 30px;
         }
-        
+
         /* 社交链接 */
         .social-links {
             display: flex;
@@ -140,14 +140,14 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 20px rgba(96,165,250,0.2);
         }
-        
+
         /* 主内容区 */
         .main {
             max-width: 1000px;
             margin: 0 auto;
             padding: 60px 20px;
         }
-        
+
         /* 卡片通用样式 */
         .card {
             background: rgba(30, 41, 59, 0.6);
@@ -163,7 +163,7 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
-        
+
         .card-title {
             font-size: 22px;
             font-weight: 600;
@@ -176,7 +176,7 @@
         .card-title .icon {
             font-size: 24px;
         }
-        
+
         /* 技术栈 */
         .tech-grid {
             display: flex;
@@ -196,7 +196,7 @@
             background: rgba(96,165,250,0.2);
             transform: scale(1.05);
         }
-        
+
         /* 项目卡片 */
         .project-item {
             padding: 20px;
@@ -225,7 +225,7 @@
             transition: color 0.3s;
         }
         .project-links a:hover { color: #93c5fd; }
-        
+
         /* 博客列表 */
         .blog-list { list-style: none; }
         .blog-list li {
@@ -249,7 +249,16 @@
             color: #64748b;
             font-size: 13px;
         }
-        
+        .blog-tag {
+            display: inline-block;
+            background: rgba(96,165,250,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #60a5fa;
+            margin-left: 8px;
+        }
+
         /* 社区运营 */
         .stats-row {
             display: flex;
@@ -275,7 +284,7 @@
             color: #94a3b8;
             margin-top: 5px;
         }
-        
+
         /* 页脚 */
         .footer {
             text-align: center;
@@ -285,7 +294,7 @@
             border-top: 1px solid rgba(255,255,255,0.05);
         }
         .footer a { color: #60a5fa; text-decoration: none; }
-        
+
         /* 响应式 */
         @media (max-width: 600px) {
             .hero h1 { font-size: 28px; }
@@ -295,6 +304,7 @@
             .stats-row { gap: 15px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <!-- 导航栏 -->
@@ -327,7 +337,7 @@
 
     <!-- 主内容 -->
     <div class="main">
-        
+
         <!-- 技术栈 -->
         <div class="card" id="about">
             <h2 class="card-title"><span class="icon">🛠️</span> 技术栈</h2>
@@ -366,13 +376,29 @@
             </div>
         </div>
 
-        <!-- 技术博客 -->
+        <!-- 技术博客（已更新为最新7篇） -->
         <div class="card">
             <h2 class="card-title"><span class="icon">📝</span> 技术博客</h2>
-            <p style="color:#94a3b8; margin-bottom:15px; font-size:14px;">系统整理 Java 后端、HTTP 协议、Spring Boot 等学习笔记</p>
+            <p style="color:#94a3b8; margin-bottom:15px; font-size:14px;">系统整理 Java 后端、HTTP 协议、Spring Boot、Git 工作流等学习笔记</p>
             <ul class="blog-list">
                 <li>
-                    <a href="blog/01-http协议.html">HTTP 协议从入门到面试：Java 后端工程师必备</a>
+                    <a href="blog/05-GitHub邮箱隐私与GH007.html">GitHub 邮箱隐私配置与 GH007 错误解决<span class="blog-tag">GitHub</span></a>
+                    <span class="blog-date">2026-06-02</span>
+                </li>
+                <li>
+                    <a href="blog/04-Git安装与GitHub推送.html">Git 安装配置与 GitHub 推送完全指南<span class="blog-tag">Git</span></a>
+                    <span class="blog-date">2026-06-02</span>
+                </li>
+                <li>
+                    <a href="blog/03-Windows软件环境规范.html">Windows 软件与开发环境文件夹结构规范<span class="blog-tag">Windows</span></a>
+                    <span class="blog-date">2026-06-02</span>
+                </li>
+                <li>
+                    <a href="blog/02-域名能做什么.html">一个域名能做什么？从 ziyuanzhan.top 说起<span class="blog-tag">域名</span></a>
+                    <span class="blog-date">2026-06-01</span>
+                </li>
+                <li>
+                    <a href="blog/01-http协议.html">HTTP 协议从入门到面试：Java 后端工程师必备<span class="blog-tag">HTTP</span></a>
                     <span class="blog-date">2026-06-01</span>
                 </li>
                 <li>
