@@ -6,207 +6,351 @@
     <title>技能图谱 | binqi</title>
     <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
     <style>
+        :root {
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --glass-bg: rgba(16, 18, 38, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45),
+                            0 2px 8px rgba(0, 0, 0, 0.35),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            /* 深邃宇宙背景：径向渐变 深蓝 -> 纯黑 */
+            background:
+                radial-gradient(ellipse 120% 90% at 50% 42%, #1b2150 0%, #0d1030 38%, #05060f 72%, #000007 100%);
             color: #fff;
             overflow: hidden;
-            height: 100vh;
         }
+
+        /* ---------- 星空画布 ---------- */
+        #stars {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #graph {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+        }
+
+        /* ---------- 玻璃态导航 ---------- */
         .nav {
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 100;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-            padding: 12px 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 14px 28px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 22px;
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
         }
         .nav a {
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.78);
             text-decoration: none;
             font-size: 14px;
-            transition: color 0.3s;
+            transition: color 0.35s var(--ease), text-shadow 0.35s var(--ease);
         }
-        .nav a:hover { color: #fff; }
+        .nav a:hover {
+            color: #fff;
+            text-shadow: 0 0 12px rgba(120, 180, 255, 0.8);
+        }
         .nav-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 17px;
+            font-weight: 700;
             color: #fff;
             margin-right: auto;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 18px rgba(100, 160, 255, 0.45);
         }
+
+        /* ---------- 图例 ---------- */
         .legend {
             position: fixed;
-            top: 70px; right: 20px;
+            top: 80px; right: 22px;
             z-index: 50;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
             font-size: 13px;
+            min-width: 150px;
+        }
+        .legend-title {
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 12px;
+            text-transform: uppercase;
         }
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 10px;
+            margin-bottom: 10px;
+            transition: transform 0.3s var(--ease);
         }
+        .legend-item:last-child { margin-bottom: 0; }
+        .legend-item:hover { transform: translateX(4px); }
         .legend-dot {
-            width: 12px; height: 12px;
+            width: 13px; height: 13px;
             border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+            flex-shrink: 0;
         }
+        .legend-item span { color: rgba(255,255,255,0.85); }
+
+        /* ---------- Tooltip ---------- */
         .tooltip {
             position: absolute;
             z-index: 200;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            padding: 16px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 18px;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.2s;
-            max-width: 280px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transform: translateY(8px) scale(0.97);
+            transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
+            max-width: 290px;
+            box-shadow: var(--glass-shadow);
         }
-        .tooltip.show { opacity: 1; }
-        .tooltip h3 { margin: 0 0 8px 0; font-size: 16px; color: #fff; }
+        .tooltip.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .tooltip h3 {
+            margin: 0 0 10px 0;
+            font-size: 17px;
+            color: #fff;
+            text-shadow: 0 0 14px rgba(255,255,255,0.25);
+        }
         .tooltip .category {
             display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
+            padding: 3px 10px;
+            border-radius: 6px;
             font-size: 11px;
-            margin-bottom: 8px;
-            font-weight: 500;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         .tooltip .desc {
             font-size: 13px;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.5;
-            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.72);
+            line-height: 1.6;
+            margin-bottom: 12px;
         }
         .tooltip .level-bar {
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 3px;
             overflow: hidden;
             margin-top: 6px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
         }
         .tooltip .level-fill {
             height: 100%;
-            border-radius: 2px;
+            border-radius: 3px;
+            box-shadow: 0 0 10px currentColor;
         }
         .tooltip .level-text {
             font-size: 11px;
-            color: rgba(255,255,255,0.5);
-            margin-top: 4px;
+            color: rgba(255, 255, 255, 0.55);
+            margin-top: 6px;
         }
+
+        /* ---------- 控制按钮 ---------- */
         .controls {
             position: fixed;
-            bottom: 20px; left: 20px;
+            bottom: 24px; left: 24px;
             z-index: 50;
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         .controls button {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             color: #fff;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 10px 18px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.3s;
+            transition: transform 0.35s var(--ease-bounce),
+                        background 0.35s var(--ease),
+                        border-color 0.35s var(--ease),
+                        box-shadow 0.35s var(--ease);
+            box-shadow: var(--glass-shadow);
         }
         .controls button:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+            background: rgba(60, 80, 160, 0.4);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5),
+                        0 0 18px rgba(120, 170, 255, 0.35);
         }
-        svg { cursor: grab; }
-        svg:active { cursor: grabbing; }
-        .node circle { cursor: pointer; }
-        .node:hover circle { filter: brightness(1.2); }
-        .node text {
-            font-size: 12px;
-            fill: #fff;
-            pointer-events: none;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            font-weight: 500;
-        }
-        .link { stroke-opacity: 0.4; }
+        .controls button:active { transform: translateY(-1px); }
+
+        /* ---------- 搜索框 ---------- */
         .search-box {
             position: fixed;
-            top: 70px; left: 20px;
+            top: 80px; left: 22px;
             z-index: 50;
         }
         .search-box input {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             color: #fff;
-            padding: 8px 14px;
-            border-radius: 8px;
-            width: 200px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            width: 210px;
             font-size: 13px;
             outline: none;
+            transition: width 0.4s var(--ease), border-color 0.35s var(--ease),
+                        box-shadow 0.35s var(--ease), background 0.35s var(--ease);
+            box-shadow: var(--glass-shadow);
         }
-        .search-box input::placeholder { color: rgba(255,255,255,0.4); }
-        .search-box input:focus { border-color: rgba(255,255,255,0.3); }
+        .search-box input::placeholder { color: rgba(255, 255, 255, 0.42); }
+        .search-box input:focus {
+            width: 260px;
+            border-color: rgba(120, 180, 255, 0.6);
+            background: rgba(40, 60, 130, 0.45);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45),
+                        0 0 22px rgba(120, 180, 255, 0.4);
+        }
+
+        /* ---------- 加载动画 ---------- */
         .loading {
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        .spinner {
+            width: 46px; height: 46px;
+            border: 3px solid rgba(255, 255, 255, 0.12);
+            border-top-color: #8ab4ff;
+            border-right-color: rgba(138, 180, 255, 0.4);
+            border-radius: 50%;
+            animation: spin 0.85s linear infinite;
+            box-shadow: 0 0 18px rgba(138, 180, 255, 0.35);
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ---------- SVG 交互 ---------- */
+        svg { cursor: grab; display: block; }
+        svg:active { cursor: grabbing; }
+        .node circle {
+            cursor: pointer;
+            filter: url(#glow);
+            transition: filter 0.35s var(--ease);
+        }
+        .node.focus circle { filter: url(#glow) brightness(1.3); }
+        .node text {
+            font-size: 12px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6);
+            font-weight: 500;
+            transition: opacity 0.35s var(--ease);
+        }
+        .link {
+            stroke: #ffffff;
+            stroke-opacity: 0.32;
+            transition: stroke-opacity 0.4s var(--ease), stroke 0.4s var(--ease);
+        }
+        .link.dim { stroke-opacity: 0.05 !important; }
+        .link.highlight { stroke-opacity: 0.95 !important; }
+        .node { transition: opacity 0.4s var(--ease); }
+        .node.dim { opacity: 0.22; }
+
+        /* 核心节点脉冲光环 */
+        .pulse-ring {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2px;
+            pointer-events: none;
+            transform-origin: center;
+            animation: corePulse 2.6s var(--ease) infinite;
+        }
+        .pulse-ring.delay { animation-delay: 1.3s; }
+        @keyframes corePulse {
+            0%   { r: 46px;  opacity: 0.75; stroke-width: 3px; }
+            100% { r: 105px; opacity: 0;    stroke-width: 0.5px; }
         }
     </style>
 </head>
 <body>
+    <canvas id="stars"></canvas>
+
     <div class="nav">
-        <span class="nav-title">🕸️ 技能图谱</span>
+        <span class="nav-title">🕸️ 技能星系图谱</span>
         <a href="index.html">🏠 首页</a>
         <a href="blog/index.html">📝 博客</a>
         <a href="channels.html">🎯 频道</a>
     </div>
-    
+
     <div class="search-box">
         <input type="text" id="searchInput" placeholder="搜索技能..." autocomplete="off">
     </div>
-    
+
     <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div><span>编程语言</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div><span>前端开发</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div><span>后端/数据库</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div><span>DevOps/工具</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div><span>AI/数据</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#1abc9c"></div><span>软技能</span></div>
+        <div class="legend-title">分类图例</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ff6b6b;color:#ff6b6b"></div><span>编程语言</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4ecdc4;color:#4ecdc4"></div><span>前端开发</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#45b7d1;color:#45b7d1"></div><span>后端/数据库</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ffa502;color:#ffa502"></div><span>DevOps/工具</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#a55eea;color:#a55eea"></div><span>AI/数据</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#26de81;color:#26de81"></div><span>软技能</span></div>
     </div>
-    
+
     <div class="controls">
         <button onclick="resetZoom()">⟲ 重置视图</button>
-        <button onclick="toggleAnimation()">⏸ 暂停/继续</button>
+        <button onclick="toggleAnimation()">⏸ 暂停 / 继续</button>
     </div>
-    
+
     <div class="tooltip" id="tooltip"></div>
-    <div class="loading" id="loading">加载技能数据中...</div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>正在点亮技能星系...</div>
+    </div>
     <div id="graph"></div>
 
     <script>
+        /* ====================== 配色方案 ====================== */
         const colors = {
-            lang: "#e74c3c",
-            frontend: "#3498db",
-            backend: "#2ecc71",
-            devops: "#f39c12",
-            ai: "#9b59b6",
-            soft: "#1abc9c",
-            center: "#fff"
+            lang:     "#ff6b6b",  // 编程语言 - 珊瑚红
+            frontend: "#4ecdc4",  // 前端开发 - 青绿
+            backend:  "#45b7d1",  // 后端/数据库 - 天蓝
+            devops:   "#ffa502",  // DevOps/工具 - 橙黄
+            ai:       "#a55eea",  // AI/数据 - 紫罗兰
+            soft:     "#26de81",  // 软技能 - 翠绿
+            center:   "#ffffff"   // 核心
         };
         const groupNames = {
             lang: "编程语言",
@@ -218,6 +362,59 @@
             center: "核心"
         };
 
+        /* 将颜色提亮以生成渐变的高光端 */
+        function lighten(hex, amt) {
+            const c = hex.replace('#', '');
+            const r = parseInt(c.substring(0, 2), 16);
+            const g = parseInt(c.substring(2, 4), 16);
+            const b = parseInt(c.substring(4, 6), 16);
+            const nr = Math.round(r + (255 - r) * amt);
+            const ng = Math.round(g + (255 - g) * amt);
+            const nb = Math.round(b + (255 - b) * amt);
+            return `rgb(${nr},${ng},${nb})`;
+        }
+
+        /* ====================== 星空画布 ====================== */
+        const starCanvas = document.getElementById('stars');
+        const sctx = starCanvas.getContext('2d');
+        let stars = [];
+        function initStars() {
+            const dpr = window.devicePixelRatio || 1;
+            starCanvas.width = window.innerWidth * dpr;
+            starCanvas.height = window.innerHeight * dpr;
+            starCanvas.style.width = window.innerWidth + 'px';
+            starCanvas.style.height = window.innerHeight + 'px';
+            sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const count = 200;
+            stars = Array.from({ length: count }, () => ({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                r: Math.random() * 1.4 + 0.3,
+                base: Math.random() * 0.5 + 0.25,
+                speed: Math.random() * 0.8 + 0.3,
+                phase: Math.random() * Math.PI * 2,
+                hue: Math.random() < 0.15 ? 210 : (Math.random() < 0.1 ? 280 : 0)
+            }));
+        }
+        function drawStars(t) {
+            sctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            for (const s of stars) {
+                const tw = 0.5 + 0.5 * Math.sin(t * 0.001 * s.speed + s.phase);
+                const alpha = s.base * (0.35 + 0.65 * tw);
+                sctx.beginPath();
+                sctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                if (s.hue === 210) sctx.fillStyle = `rgba(150,190,255,${alpha})`;
+                else if (s.hue === 280) sctx.fillStyle = `rgba(200,160,255,${alpha})`;
+                else sctx.fillStyle = `rgba(255,255,255,${alpha})`;
+                sctx.fill();
+            }
+            requestAnimationFrame(drawStars);
+        }
+        initStars();
+        requestAnimationFrame(drawStars);
+        window.addEventListener('resize', initStars);
+
+        /* ====================== SVG 图谱 ====================== */
         const width = window.innerWidth;
         const height = window.innerHeight;
 
@@ -225,18 +422,38 @@
             .append("svg")
             .attr("width", width)
             .attr("height", height)
-            .attr("viewBox", [-width/2, -height/2, width, height]);
+            .attr("viewBox", [-width / 2, -height / 2, width, height]);
+
+        /* defs: 渐变 + 霓虹光晕滤镜 */
+        const defs = svg.append("defs");
+
+        const glow = defs.append("filter")
+            .attr("id", "glow")
+            .attr("x", "-60%").attr("y", "-60%")
+            .attr("width", "220%").attr("height", "220%");
+        glow.append("feGaussianBlur").attr("stdDeviation", "3.2").attr("result", "blur");
+        const feMerge = glow.append("feMerge");
+        feMerge.append("feMergeNode").attr("in", "blur");
+        feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+        Object.entries(colors).forEach(([key, color]) => {
+            const grad = defs.append("radialGradient")
+                .attr("id", `grad-${key}`)
+                .attr("cx", "35%").attr("cy", "32%").attr("r", "70%");
+            grad.append("stop").attr("offset", "0%").attr("stop-color", lighten(color, 0.55));
+            grad.append("stop").attr("offset", "60%").attr("stop-color", color);
+            grad.append("stop").attr("offset", "100%").attr("stop-color", lighten(color, -0.15));
+        });
 
         const g = svg.append("g");
 
         const zoom = d3.zoom()
-            .scaleExtent([0.1, 4])
+            .scaleExtent([0.15, 4])
             .on("zoom", (event) => g.attr("transform", event.transform));
         svg.call(zoom);
 
         const tooltip = d3.select("#tooltip");
 
-        // 加载 JSON 数据
         fetch('skills.json')
             .then(res => {
                 if (!res.ok) throw new Error('加载失败');
@@ -247,7 +464,8 @@
                 initGraph(data);
             })
             .catch(err => {
-                document.getElementById('loading').textContent = '加载失败: ' + err.message;
+                document.getElementById('loading').innerHTML =
+                    '<div style="color:#ff8a8a">加载失败: ' + err.message + '</div>';
                 console.error(err);
             });
 
@@ -255,22 +473,22 @@
             const simulation = d3.forceSimulation(skillData.nodes)
                 .force("link", d3.forceLink(skillData.links)
                     .id(d => d.id)
-                    .distance(d => d.source.group === "center" || d.target.group === "center" ? 130 : 90))
+                    .distance(d => (d.source.group === "center" || d.target.group === "center") ? 150 : 95))
                 .force("charge", d3.forceManyBody()
-                    .strength(d => d.group === "center" ? -1000 : -350))
+                    .strength(d => d.group === "center" ? -1400 : -380))
                 .force("center", d3.forceCenter(0, 0))
                 .force("collision", d3.forceCollide()
-                    .radius(d => d.group === "center" ? 55 : 35))
-                .force("x", d3.forceX().strength(0.04))
-                .force("y", d3.forceY().strength(0.04));
+                    .radius(d => d.group === "center" ? 60 : 38))
+                .force("x", d3.forceX().strength(0.045))
+                .force("y", d3.forceY().strength(0.045));
 
             const link = g.append("g")
                 .selectAll("line")
                 .data(skillData.links)
                 .join("line")
                 .attr("class", "link")
-                .attr("stroke", "#fff")
-                .attr("stroke-width", d => d.source.group === "center" || d.target.group === "center" ? 2 : 1);
+                .attr("stroke-width", d =>
+                    (d.source.group === "center" || d.target.group === "center") ? 2.5 : 1);
 
             const node = g.append("g")
                 .selectAll("g")
@@ -290,76 +508,98 @@
                         d.fx = null; d.fy = null;
                     }));
 
+            /* 核心节点脉冲光环（两道错峰扩散） */
+            node.filter(d => d.group === "center")
+                .append("circle")
+                .attr("class", "pulse-ring")
+                .attr("r", 46);
+            node.filter(d => d.group === "center")
+                .append("circle")
+                .attr("class", "pulse-ring delay")
+                .attr("r", 46);
+
             node.append("circle")
-                .attr("r", d => d.group === "center" ? 42 : Math.max(16, d.level / 4.5))
-                .attr("fill", d => colors[d.group])
-                .attr("stroke", "#fff")
-                .attr("stroke-width", d => d.group === "center" ? 3 : 2)
-                .attr("stroke-opacity", 0.8);
+                .attr("r", d => d.group === "center" ? 44 : Math.max(17, d.level / 4.3))
+                .attr("fill", d => `url(#grad-${d.group})`)
+                .attr("stroke", d => colors[d.group])
+                .attr("stroke-width", d => d.group === "center" ? 2.5 : 1.5)
+                .attr("stroke-opacity", 0.9);
 
             node.append("text")
                 .attr("dy", d => d.group === "center" ? 5 : 4)
                 .attr("text-anchor", "middle")
                 .text(d => d.id)
-                .style("font-size", d => d.group === "center" ? "14px" : "11px")
+                .style("font-size", d => d.group === "center" ? "15px" : "11px")
                 .style("font-weight", d => d.group === "center" ? "700" : "500");
 
-            node.on("mouseover", function(event, d) {
-                link.style("stroke-opacity", l => 
-                    (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.1);
-                link.style("stroke-width", l => 
-                    (l.source.id === d.id || l.target.id === d.id) ? 2.5 : 1);
-                node.style("opacity", n => {
-                    const isConnected = skillData.links.some(l => 
-                        (l.source.id === d.id && l.target.id === n.id) ||
-                        (l.target.id === d.id && l.source.id === n.id));
-                    return (n.id === d.id || isConnected || n.group === "center") ? 1 : 0.3;
+            /* ---------- 悬停高亮 ---------- */
+            function neighbors(id) {
+                const set = new Set([id]);
+                skillData.links.forEach(l => {
+                    if (l.source.id === id) set.add(l.target.id);
+                    if (l.target.id === id) set.add(l.source.id);
                 });
+                return set;
+            }
+
+            node.on("mouseover", function (event, d) {
+                const near = neighbors(d.id);
+                link.classed("dim", l => !(l.source.id === d.id || l.target.id === d.id))
+                    .classed("highlight", l => (l.source.id === d.id || l.target.id === d.id))
+                    .attr("stroke", l =>
+                        (l.source.id === d.id || l.target.id === d.id) ? colors[d.group] : "#fff");
+                node.classed("dim", n => !(near.has(n.id) || n.group === "center"))
+                    .classed("focus", n => n.id === d.id);
 
                 tooltip.html(`
                     <h3>${d.id}</h3>
-                    <span class="category" style="background:${colors[d.group]}22;color:${colors[d.group]};border:1px solid ${colors[d.group]}66">
+                    <span class="category" style="background:${colors[d.group]}26;color:${colors[d.group]};border:1px solid ${colors[d.group]}66">
                         ${groupNames[d.group]}
                     </span>
                     <div class="desc">${d.desc}</div>
                     <div class="level-text">掌握程度: ${d.level}%</div>
                     <div class="level-bar">
-                        <div class="level-fill" style="width:${d.level}%;background:${colors[d.group]}"></div>
+                        <div class="level-fill" style="width:${d.level}%;background:${colors[d.group]};color:${colors[d.group]}"></div>
                     </div>
                 `);
                 tooltip
-                    .style("left", (event.pageX + 15) + "px")
-                    .style("top", (event.pageY - 10) + "px")
+                    .style("left", (event.pageX + 18) + "px")
+                    .style("top", (event.pageY - 12) + "px")
                     .classed("show", true);
             })
-            .on("mousemove", function(event) {
+            .on("mousemove", function (event) {
                 tooltip
-                    .style("left", (event.pageX + 15) + "px")
-                    .style("top", (event.pageY - 10) + "px");
+                    .style("left", (event.pageX + 18) + "px")
+                    .style("top", (event.pageY - 12) + "px");
             })
-            .on("mouseout", function() {
-                link.style("stroke-opacity", 0.4).style("stroke-width", d => 
-                    d.source.group === "center" || d.target.group === "center" ? 2 : 1);
-                node.style("opacity", 1);
+            .on("mouseout", function () {
+                link.classed("dim", false).classed("highlight", false).attr("stroke", "#fff");
+                node.classed("dim", false).classed("focus", false);
                 tooltip.classed("show", false);
             })
-            .on("click", function() {
+            .on("click", function () {
                 simulation.alpha(0.3).restart();
             });
 
+            /* ---------- 搜索 ---------- */
             const searchInput = document.getElementById("searchInput");
-            searchInput.addEventListener("input", function(e) {
+            searchInput.addEventListener("input", function (e) {
                 const term = e.target.value.toLowerCase();
                 if (!term) {
-                    node.style("opacity", 1);
-                    link.style("stroke-opacity", 0.4);
+                    node.classed("dim", false);
+                    link.classed("dim", false).classed("highlight", false).attr("stroke", "#fff");
                     return;
                 }
-                const matched = skillData.nodes.filter(n => n.id.toLowerCase().includes(term));
-                const matchedIds = new Set(matched.map(n => n.id));
-                node.style("opacity", n => matchedIds.has(n.id) ? 1 : 0.15);
-                link.style("stroke-opacity", l => 
-                    (matchedIds.has(l.source.id) && matchedIds.has(l.target.id)) ? 0.6 : 0.05);
+                const matchedIds = new Set(
+                    skillData.nodes.filter(n => n.id.toLowerCase().includes(term)).map(n => n.id)
+                );
+                node.classed("dim", n => matchedIds.has(n.id) ? false : true);
+                link.classed("dim", l =>
+                    (matchedIds.has(l.source.id) && matchedIds.has(l.target.id)) ? false : true)
+                    .classed("highlight", l =>
+                        (matchedIds.has(l.source.id) && matchedIds.has(l.target.id)))
+                    .attr("stroke", l =>
+                        (matchedIds.has(l.source.id) && matchedIds.has(l.target.id)) ? "#8ab4ff" : "#fff");
             });
 
             simulation.on("tick", () => {
@@ -371,13 +611,14 @@
                 node.attr("transform", d => `translate(${d.x},${d.y})`);
             });
 
-            window.resetZoom = function() {
-                svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+            window.resetZoom = function () {
+                svg.transition().duration(750).ease(d3.easeCubicInOut)
+                    .call(zoom.transform, d3.zoomIdentity);
                 simulation.alpha(0.5).restart();
             };
 
             let isRunning = true;
-            window.toggleAnimation = function() {
+            window.toggleAnimation = function () {
                 if (isRunning) simulation.stop();
                 else simulation.restart();
                 isRunning = !isRunning;
@@ -389,7 +630,7 @@
         window.addEventListener("resize", () => {
             const w = window.innerWidth, h = window.innerHeight;
             svg.attr("width", w).attr("height", h)
-               .attr("viewBox", [-w/2, -h/2, w, h]);
+               .attr("viewBox", [-w / 2, -h / 2, w, h]);
         });
     </script>
 </body>

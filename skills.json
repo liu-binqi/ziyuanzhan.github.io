@@ -1,6 +1,6 @@
 {
   "nodes": [
-    { "id": "binqi", "group": "center", "level": 100, "desc": "全栈开发工程师 | 热爱技术，持续学习" },
+    { "id": "刘彬棋", "group": "center", "level": 100, "desc": "全栈开发工程师 | 热爱技术，持续学习" },
     
     { "id": "JavaScript", "group": "lang", "level": 90, "desc": "ES6+，异步编程，闭包，原型链" },
     { "id": "Python", "group": "lang", "level": 85, "desc": "数据分析，自动化脚本，Flask/FastAPI" },
