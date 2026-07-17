@@ -1,0 +1,119 @@
+/* ===========================================================
+   techfx.css —— 全站科技风统一增强
+   1) 导航链接（右上角）改为霓虹玻璃胶囊 + 常驻扫光动画
+   2) 选中文本 / 滚动条的高科技配色
+   作为每个页面 <head> 中“最后”引入的样式，优先级高于内联 <style>
+   =========================================================== */
+
+:root {
+  --fx-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --fx-accent: #60a5fa;
+  --fx-cyan: #22d3ee;
+  --fx-purple: #a78bfa;
+}
+
+/* ===== 导航链接：霓虹玻璃胶囊 ===== */
+.nav-links a,
+.nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(226, 232, 240, 0.80);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 2px 10px rgba(0, 0, 0, 0.30),
+    0 0 0 0 rgba(96, 165, 250, 0);                 /* 预留外发光，hover 时点亮 */
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color 0.4s var(--fx-ease),
+    background 0.4s var(--fx-ease),
+    border-color 0.4s var(--fx-ease),
+    box-shadow 0.4s var(--fx-ease),
+    transform 0.4s var(--fx-ease);
+}
+
+/* 常驻扫光：一道高光从左滑到右，营造“通电”的科技感 */
+.nav-links a::before,
+.nav a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transform: skewX(-20deg);
+  animation: fxNavSweep 4.8s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes fxNavSweep {
+  0%   { left: -70%; }
+  55%  { left: 140%; }
+  100% { left: 140%; }
+}
+
+/* 废除旧的下划线伪元素（避免与胶囊叠加） */
+.nav-links a::after,
+.nav a::after {
+  content: none !important;
+}
+
+.nav-links a:hover,
+.nav a:hover {
+  color: #fff;
+  background: rgba(96, 165, 250, 0.16);
+  border-color: rgba(96, 165, 250, 0.55);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 8px 22px rgba(96, 165, 250, 0.30),
+    0 0 18px rgba(96, 165, 250, 0.28);
+  text-shadow: 0 0 14px rgba(96, 165, 250, 0.6);
+}
+
+.nav-links a:active,
+.nav a:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* 当前页 / 激活态：常亮蓝紫渐变描边 */
+.nav-links a.active,
+.nav a.active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.22), rgba(167, 139, 250, 0.18));
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow:
+    0 0 16px rgba(96, 165, 250, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+/* ===== 选中文本 / 滚动条配色（小细节大质感） ===== */
+::selection {
+  background: rgba(96, 165, 250, 0.35);
+  color: #fff;
+  text-shadow: none;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(96, 165, 250, 0.5), rgba(167, 139, 250, 0.5));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(96, 165, 250, 0.8), rgba(167, 139, 250, 0.8));
+  background-clip: padding-box;
+}
