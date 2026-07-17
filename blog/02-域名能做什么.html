@@ -12,11 +12,11 @@
             margin: 0 auto; 
             padding: 20px;
             line-height: 1.8;
-            color: #333;
-            background: #f5f7fa;
+            color: #e2e8f0;
+            background: #0f172a;
         }
         .nav {
-            background: #2c3e50;
+            background: rgba(15,23,42,0.88); backdrop-filter: blur(12px);
             padding: 15px 20px;
             margin: -20px -20px 30px;
             border-radius: 0 0 8px 8px;
@@ -29,37 +29,37 @@
         }
         
         .article-header {
-            background: white;
+            background: rgba(30,41,59,0.6);
             padding: 30px;
             border-radius: 12px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
         }
         .article-header h1 { 
-            color: #2c3e50; 
+            color: #f1f5f9; 
             font-size: 28px;
             margin-bottom: 15px;
         }
         .article-meta {
-            color: #999;
+            color: #64748b;
             font-size: 14px;
         }
         .article-meta span { margin-right: 20px; }
         
         .article-content {
-            background: white;
+            background: rgba(30,41,59,0.6);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
         }
         
         h2 { 
-            color: #2c3e50; 
+            color: #f1f5f9; 
             margin: 30px 0 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
+            border-bottom: 2px solid #60a5fa;
         }
-        h3 { color: #34495e; margin: 25px 0 10px; }
+        h3 { color: #cbd5e1; margin: 25px 0 10px; }
         
         p { margin-bottom: 15px; }
         
@@ -70,40 +70,40 @@
             font-size: 14px;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid rgba(255,255,255,0.08);
             padding: 12px;
             text-align: left;
         }
-        th { background: #f8f9fa; font-weight: 600; }
+        th { background: rgba(15,23,42,0.5); font-weight: 600; }
         
         .tip {
-            background: #e8f6f3;
-            border-left: 4px solid #1abc9c;
+            background: rgba(38,222,129,0.1);
+            border-left: 4px solid #26de81;
             padding: 15px;
             margin: 20px 0;
             border-radius: 0 6px 6px 0;
         }
         .highlight {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
+            background: rgba(251,191,36,0.1);
+            border-left: 4px solid #fbbf24;
             padding: 15px;
             margin: 20px 0;
         }
         
         code { 
-            background: #f0f0f0; 
+            background: rgba(255,255,255,0.08); 
             padding: 2px 6px; 
             border-radius: 3px;
             font-family: "Consolas", monospace;
-            color: #c7254e;
+            color: #f87171;
         }
         
         .example-box {
-            background: #f8f9fa;
+            background: rgba(15,23,42,0.5);
             padding: 20px;
             border-radius: 8px;
             margin: 15px 0;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #60a5fa;
         }
         
         .pager {
@@ -115,18 +115,27 @@
         }
         .pager a {
             padding: 10px 20px;
-            background: #3498db;
+            background: #60a5fa;
             color: white;
             text-decoration: none;
             border-radius: 6px;
         }
-    </style>
+
+    /* ===== 科技风统一增强 ===== */
+    body {
+        background-image: radial-gradient(ellipse 120% 90% at 50% 0%, #1a2150 0%, #0f172a 45%, #070a18 100%) !important;
+        background-attachment: fixed;
+        color: #e2e8f0 !important;
+    }
+    .nav a:hover, .article-title:hover, .toc a:hover, .back-to-list:hover, .pager a:hover { color: #93c5fd !important; }
+</style>
 </head>
 <body>
     <div class="nav">
         <a href="../index.html">🏠 首页</a>
         <a href="index.html">📝 博客</a>
         <a href="../channels.html">🎯 频道</a>
+            <a href="../skills.html">🕸️ 技能图谱</a>
     </div>
 
     <div class="article-header">

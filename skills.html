@@ -465,7 +465,7 @@ const LINK_RULES = [
 
 /* 演示案例预加载 ID 列表 */
 const DEMO_IDS = new Set([
-    "刘彬棋",
+    "binqi",
     "JavaScript","Python","Java","SQL","HTML/CSS",
     "React","Vue.js","Tailwind","TypeScript","Webpack/Vite",
     "Node.js","Spring Boot","MySQL","Redis","Docker",
@@ -595,7 +595,7 @@ document.getElementById("poolSearch").addEventListener("input", e=>renderPool(e.
 /* ==================== 核心工具函数 ==================== */
 
 function buildCenterNode(){
-    return { id:"刘彬棋", group:"center", level:100, desc:"全栈开发工程师 | 热爱技术，持续学习" };
+    return { id:"binqi", group:"center", level:100, desc:"全栈开发工程师 | 热爱技术，持续学习" };
 }
 
 function getSkillData(id){ return SKILL_POOL.find(s=>s.id===id)||null; }
@@ -641,7 +641,7 @@ function addSkill(id){
 }
 
 function removeSkill(id){
-    if(id==="刘彬棋"){ showToast("核心节点不可移除"); return; }
+    if(id==="binqi"){ showToast("核心节点不可移除"); return; }
     activeNodes=activeNodes.filter(n=>n.id!==id);
     activeLinks=buildLinksForNodes(activeNodes);
     rebuildGraph();
@@ -811,7 +811,7 @@ function loadDemo(){
     const center=buildCenterNode();
     activeNodes=[center];
     DEMO_IDS.forEach(id=>{
-        if(id!=="刘彬棋"){
+        if(id!=="binqi"){
             const sd=getSkillData(id);
             if(sd) activeNodes.push({...sd});
         }

@@ -1,6 +1,6 @@
 {
   "nodes": [
-    { "id": "刘彬棋", "group": "center", "level": 100, "desc": "全栈开发工程师 | 热爱技术，持续学习" },
+    { "id": "binqi", "group": "center", "level": 100, "desc": "全栈开发工程师 | 热爱技术，持续学习" },
     
     { "id": "JavaScript", "group": "lang", "level": 90, "desc": "ES6+，异步编程，闭包，原型链" },
     { "id": "Python", "group": "lang", "level": 85, "desc": "数据分析，自动化脚本，Flask/FastAPI" },
@@ -40,13 +40,13 @@
     { "id": "问题解决", "group": "soft", "level": 90, "desc": "Debug 思路，根因分析，系统性思维" }
   ],
   "links": [
-    { "source": "刘彬棋", "target": "JavaScript" },
-    { "source": "刘彬棋", "target": "Python" },
-    { "source": "刘彬棋", "target": "React" },
-    { "source": "刘彬棋", "target": "Node.js" },
-    { "source": "刘彬棋", "target": "Git" },
-    { "source": "刘彬棋", "target": "机器学习" },
-    { "source": "刘彬棋", "target": "技术写作" },
+    { "source": "binqi", "target": "JavaScript" },
+    { "source": "binqi", "target": "Python" },
+    { "source": "binqi", "target": "React" },
+    { "source": "binqi", "target": "Node.js" },
+    { "source": "binqi", "target": "Git" },
+    { "source": "binqi", "target": "机器学习" },
+    { "source": "binqi", "target": "技术写作" },
     
     { "source": "JavaScript", "target": "TypeScript" },
     { "source": "JavaScript", "target": "HTML/CSS" },
