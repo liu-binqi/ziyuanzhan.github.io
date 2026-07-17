@@ -33,35 +33,50 @@
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 100;
-            background: rgba(10, 10, 30, 0.6);
-            backdrop-filter: blur(20px) saturate(180%);
-            padding: 16px 28px;
+            background: rgba(10, 14, 26, 0.78);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            padding: 0 28px;
             display: flex;
             align-items: center;
-            gap: 24px;
-            border-bottom: 1px solid rgba(100, 200, 255, 0.15);
-            box-shadow: 0 4px 30px rgba(0, 100, 255, 0.1);
+            gap: 4px;
+            height: 62px;
+            border-bottom: 1px solid transparent;
+            background-image: linear-gradient(to right, rgba(96,165,250,0.07), rgba(167,139,250,0.05), transparent 50%);
+            box-shadow: 0 1px 0 rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.25);
         }
         .nav a {
-            color: rgba(200, 230, 255, 0.85);
+            color: rgba(255,255,255,0.6);
             text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 6px 12px;
-            border-radius: 6px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 16px;
+            border-radius: 10px;
             position: relative;
+            letter-spacing: 0.2px;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%) scaleX(0);
+            width: 18px; height: 2px; border-radius: 2px;
+            background: linear-gradient(90deg, #60a5fa, #22d3ee);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 8px rgba(96,165,250,0.4);
         }
         .nav a:hover {
             color: #fff;
-            background: rgba(100, 200, 255, 0.1);
-            transform: translateY(-1px);
+            background: rgba(96,165,250,0.1);
+            text-shadow: 0 0 16px rgba(96,165,250,0.45);
         }
+        .nav a:hover::after { transform: translateX(-50%) scaleX(1); }
         .nav-title {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 17px;
+            font-weight: 800;
             color: #fff;
             margin-right: auto;
-            text-shadow: 0 0 20px rgba(100, 200, 255, 0.5);
+            background: linear-gradient(135deg,#fff,#60a5fa,#a78bfa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             letter-spacing: 1px;
         }
 
@@ -274,7 +289,7 @@
 
     <div class="nav">
         <span class="nav-title">🕸️ 技能图谱</span>
-        <a href="index.html"> 首页</a>
+        <a href="../index.html">🏠 首页</a>
         <a href="../blog/index.html">📝 博客</a>
         <a href="../channels.html">🎯 频道</a>
             <a href="../skills.html">🕸️ 技能图谱</a>
