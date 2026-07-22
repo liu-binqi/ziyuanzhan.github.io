@@ -133,6 +133,25 @@
         }
         .pool-footer .count-learned { color: #26de81; font-weight: 600; }
 
+        /* 折叠/展开按钮 */
+        .pool-toggle {
+            margin-left: auto;
+            width: 26px; height: 26px; flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.7);
+            border-radius: 8px; cursor: pointer;
+            font-size: 15px; line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s var(--ease);
+        }
+        .pool-toggle:hover { background: rgba(96,165,250,0.12); color: #fff; border-color: rgba(96,165,250,0.3); }
+        .skill-pool.collapsed { width: auto; }
+        .skill-pool.collapsed .pool-search,
+        .skill-pool.collapsed .pool-list,
+        .skill-pool.collapsed .pool-footer,
+        .skill-pool.collapsed .subtitle { display: none; }
+        .skill-pool.collapsed .pool-toggle { transform: rotate(180deg); }
+
         /* ===== 图例（右侧） ===== */
         .legend {
             position: fixed; top: 78px; right: 18px;
@@ -248,6 +267,7 @@
         <span class="menu-icon">☰</span>
         <h3>技能池</h3>
         <span class="subtitle">学习路线参考</span>
+        <button class="pool-toggle" id="poolToggle" title="折叠 / 展开">‹</button>
     </div>
     <div class="pool-search">
         <input type="text" id="poolSearch" placeholder="搜索技能...">
@@ -429,6 +449,11 @@ function buildPool(filterText) {
 
 document.getElementById("poolSearch").addEventListener("input", e => buildPool(e.target.value));
 buildPool(); // 初始渲染
+
+// 折叠 / 展开技能池
+document.getElementById("poolToggle").addEventListener("click", () => {
+    document.querySelector(".skill-pool").classList.toggle("collapsed");
+});
 
 
 /* ==================== 星空画布 ==================== */
