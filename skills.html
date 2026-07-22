@@ -8,7 +8,6 @@
     <style>
         :root {
             --ease: cubic-bezier(0.4, 0, 0.2, 1);
-            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
             --glass-bg: rgba(14, 17, 40, 0.55);
             --glass-border: rgba(255, 255, 255, 0.13);
             --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
@@ -24,11 +23,11 @@
             overflow: hidden;
         }
 
-        /* ===== 星空画布 ===== */
+        /* 星空画布 */
         #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
         #graph   { position: fixed; inset: 0; z-index: 1; }
 
-        /* ===== 导航栏（升级） ===== */
+        /* ===== 导航栏 ===== */
         .nav {
             position: fixed; top: 0; left: 0; right: 0;
             z-index: 100;
@@ -46,8 +45,7 @@
             color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13.5px;
             font-weight: 500;
             padding: 8px 16px; border-radius: 10px;
-            transition: all 0.35s var(--ease);
-            letter-spacing: 0.2px;
+            transition: all 0.35s var(--ease); letter-spacing: 0.2px;
         }
         .nav a::after {
             content: '';
@@ -61,106 +59,79 @@
         .nav a:hover::after { transform: translateX(-50%) scaleX(1); }
         .nav-title { font-size: 17px; font-weight: 800; color: #fff; margin-right: auto; letter-spacing: 1px; background: linear-gradient(135deg,#fff,#60a5fa,#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 
-        /* ===== 技能池面板（可折叠） ===== */
-        .pool-panel {
-            position: fixed; top: 78px; left: 18px; bottom: 70px;
-            width: 260px; z-index: 60;
-            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
+        /* ===== 技能池侧栏（参考面板，只读） ===== */
+        .skill-pool {
+            position: fixed; top: 74px; left: 14px;
+            width: 280px; max-height: calc(100vh - 90px);
+            z-index: 50;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 18px; border: 1px solid var(--glass-border);
             box-shadow: var(--glass-shadow);
             display: flex; flex-direction: column;
             overflow: hidden;
-            transition: transform 0.45s var(--ease), opacity 0.35s var(--ease);
         }
-        .pool-panel.collapsed { transform: translateX(-278px); opacity: 0; pointer-events: none; }
         .pool-header {
             padding: 16px 18px 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
             display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
             flex-shrink: 0;
         }
-        .pool-header h3 {
-            font-size: 14px; font-weight: 600; color: #fff;
-            text-shadow: 0 0 10px rgba(150,190,255,0.3); flex: 1;
-        }
-        .pool-toggle-btn {
-            position: fixed; left: 20px; top: 86px; z-index: 61;
-            width: 34px; height: 34px; border-radius: 10px;
-            background: var(--glass-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            color: rgba(255,255,255,0.75); cursor: pointer;
-            font-size: 17px; display: flex; align-items: center; justify-content: center;
-            box-shadow: var(--glass-shadow);
-            transition: transform 0.35s var(--ease-bounce), background 0.3s var(--ease);
-        }
-        .pool-toggle-btn:hover { background: rgba(60,80,160,0.4); transform: scale(1.08); }
-        .pool-toggle-btn.hidden { display: none; }
+        .pool-header .menu-icon { font-size: 18px; opacity: 0.7; }
+        .pool-header h3 { font-size: 16px; font-weight: 700; flex: 1; }
+        .pool-header .subtitle { font-size: 11px; color: rgba(255,255,255,0.35); }
         .pool-search {
-            padding: 10px 18px 8px;
+            padding: 10px 14px; flex-shrink: 0;
         }
         .pool-search input {
             width: 100%; padding: 9px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.06);
-            color: #fff; font-size: 13px; outline: none;
-            transition: border-color 0.3s var(--ease), background 0.3s var(--ease),
-                        box-shadow 0.3s var(--ease);
+            border-radius: 10px; border: 1px solid rgba(255,255,255,0.09);
+            background: rgba(0,0,0,0.25); color: #e2e8f0;
+            font-size: 13px; outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
-        .pool-search input::placeholder { color: rgba(255,255,255,0.38); }
-        .pool-search input:focus {
-            border-color: rgba(120,180,255,0.55);
-            background: rgba(30,50,110,0.4);
-            box-shadow: 0 0 16px rgba(120,180,255,0.25);
-        }
+        .pool-search input:focus { border-color: rgba(96,165,250,0.4); box-shadow: 0 0 12px rgba(96,165,250,0.12); }
+        .pool-search input::placeholder { color: rgba(255,255,255,0.28); }
         .pool-list {
-            flex: 1; overflow-y: auto; padding: 4px 10px 12px;
-            scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent;
+            overflow-y: auto; flex: 1; padding: 4px 0;
+            scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
         }
-        .pool-list::-webkit-scrollbar { width: 5px; }
-        .pool-list::-webkit-scrollbar-track { background: transparent; }
-        .pool-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
-        /* 分类标签 */
+        .pool-list::-webkit-scrollbar { width: 4px; }
+        .pool-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
         .pool-group-label {
-            font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase;
-            color: rgba(255,255,255,0.4); padding: 10px 8px 4px;
-            font-weight: 600;
+            padding: 10px 18px 6px; font-size: 11px; font-weight: 600;
+            letter-spacing: 0.8px; color: rgba(255,255,255,0.38);
+            text-transform: uppercase;
         }
         .pool-item {
             display: flex; align-items: center; gap: 10px;
-            padding: 7px 10px; margin-bottom: 2px;
-            border-radius: 10px; cursor: pointer;
-            transition: background 0.25s var(--ease), transform 0.25s var(--ease);
-            user-select: none;
+            padding: 8px 18px; cursor: default;
+            transition: background 0.25s;
         }
-        .pool-item:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateX(4px);
-        }
-        .pool-item.in-graph {
-            opacity: 0.32; pointer-events: none;
-        }
+        .pool-item:hover { background: rgba(255,255,255,0.04); }
         .pool-dot {
             width: 10px; height: 10px; border-radius: 50%;
-            flex-shrink: 0;
-            box-shadow: 0 0 7px currentColor;
+            flex-shrink: 0; box-shadow: 0 0 7px currentColor;
         }
-        .pool-name { font-size: 13px; color: rgba(255,255,255,0.88); }
-        .pool-add-icon {
-            margin-left: auto; font-size: 11px;
-            color: rgba(255,255,255,0.3);
-            transition: color 0.25s var(--ease), transform 0.25s var(--ease);
+        .pool-name { font-size: 13.5px; color: rgba(255,255,255,0.82); flex: 1; }
+        .pool-status {
+            font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 500;
         }
-        .pool-item:hover .pool-add-icon { color: #8ab4ff; transform: scale(1.2); }
-        .pool-item.in-graph .pool-add-icon { content: '✓'; color: #26de81; }
-        .pool-stats {
-            padding: 10px 18px 14px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            font-size: 12px; color: rgba(255,255,255,0.45);
+        .status-learned {
+            background: rgba(38,222,129,0.12); color: #26de81;
+            border: 1px solid rgba(38,222,129,0.2);
+        }
+        .status-planned {
+            background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.35);
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+        .pool-footer {
+            padding: 10px 18px; border-top: 1px solid rgba(255,255,255,0.06);
             display: flex; justify-content: space-between;
+            font-size: 12px; color: rgba(255,255,255,0.4);
+            flex-shrink: 0;
         }
-        .pool-count { color: #8ab4ff; font-weight: 600; }
+        .pool-footer .count-learned { color: #26de81; font-weight: 600; }
 
         /* ===== 图例（右侧） ===== */
         .legend {
@@ -195,53 +166,8 @@
         .tooltip .level-bar { height: 4px; background: rgba(255,255,255,0.12); border-radius: 2px; overflow: hidden; margin-top: 5px; }
         .tooltip .level-fill { height: 100%; border-radius: 2px; box-shadow: 0 0 8px currentColor; }
         .tooltip .level-text { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 5px; }
-        .tooltip .tip-hint { font-size: 11px; color: rgba(255,255,255,0.38); margin-top: 8px; padding-top: 7px; border-top: 1px solid rgba(255,255,255,0.07); }
 
-        /* ===== 控制按钮（升级） ===== */
-        .controls {
-            position: fixed; bottom: 22px; left: 22px; z-index: 50;
-            display: flex; gap: 8px;
-        }
-        .controls button {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(96,165,250,0.2);
-            color: rgba(255,255,255,0.85);
-            padding: 10px 18px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            transition: all 0.4s var(--ease);
-            box-shadow:
-                0 4px 16px rgba(0,0,0,0.3),
-                0 0 0 1px rgba(255,255,255,0.04),
-                inset 0 1px 0 rgba(255,255,255,0.06);
-        }
-        .controls button:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, rgba(96,165,250,0.18), rgba(34,211,238,0.12));
-            border-color: rgba(96,165,250,0.45);
-            color: #fff;
-            box-shadow:
-                0 8px 28px rgba(0,0,0,0.4),
-                0 0 20px rgba(96,165,250,0.2),
-                0 0 0 1px rgba(96,165,250,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            text-shadow: 0 0 10px rgba(255,255,255,0.25);
-        }
-        .controls button:active { transform: translateY(-1px) scale(0.99); }
-        .controls button.danger:hover {
-            background: linear-gradient(135deg, rgba(248,113,113,0.18), rgba(220,38,38,0.12));
-            border-color: rgba(248,113,113,0.4);
-            box-shadow:
-                0 8px 28px rgba(0,0,0,0.4),
-                0 0 20px rgba(248,113,113,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.08);
-        }
-
-        /* ===== 加载动画 ===== */
+        /* 加载动画 */
         .loading {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%,-50%); z-index: 10;
@@ -258,14 +184,14 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== SVG 图谱交互 ===== */
+        /* SVG 图谱 */
         svg { cursor: grab; display: block; }
         svg:active { cursor: grabbing; }
         .node circle { cursor: pointer; filter: url(#glow); transition: filter 0.35s var(--ease); }
         .node.focus circle { filter: url(#glow) brightness(1.35); }
         .node text {
             font-size: 12px; fill: #fff; pointer-events: none;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.92) , 0 0 8px rgba(0,0,0,0.55);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.92), 0 0 8px rgba(0,0,0,0.55);
             font-weight: 500; transition: opacity 0.35s var(--ease);
         }
         .link { stroke: #ffffff; stroke-opacity: 0.3; transition: stroke-opacity 0.4s var(--ease), stroke 0.4s var(--ease); }
@@ -273,12 +199,6 @@
         .link.highlight { stroke-opacity: 0.95 !important; }
         .node { transition: opacity 0.4s var(--ease); }
         .node.dim { opacity: 0.2; }
-        .node.new-entrance circle { animation: popIn 0.5s var(--ease-bounce) forwards; }
-        @keyframes popIn {
-            0%   { r: 0; opacity: 0; }
-            65%  { r: calc(var(--target-r) * 1.25); }
-            100% { r: var(--target-r); opacity: 1; }
-        }
 
         /* 核心节点脉冲光环 */
         .pulse-ring {
@@ -292,69 +212,23 @@
             100% { r: 105px; opacity: 0;     stroke-width: 0.4px; }
         }
 
-        /* 删除按钮（右键菜单） */
-        .ctx-menu {
-            position: absolute; z-index: 300;
-            background: var(--glass-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 12px;
-            padding: 6px 0; min-width: 160px; box-shadow: var(--glass-shadow);
-            display: none;
-        }
-        .ctx-menu.show { display: block; animation: ctxIn 0.2s var(--ease-bounce); }
-        @keyframes ctxIn { from { opacity:0; transform:scale(0.92)translateY(-4px); } }
-        .ctx-item {
-            padding: 8px 16px; font-size: 13px; color: rgba(255,255,255,0.82);
-            cursor: pointer; display: flex; align-items: center; gap: 10px;
-            transition: background 0.2s var(--ease);
-        }
-        .ctx-item:hover { background: rgba(255,255,255,0.09); }
-        .ctx-item.danger:hover { background: rgba(220,60,60,0.25); color: #ff8a8a; }
-        .ctx-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 4px 0; }
-
-        /* 提示 Toast */
-        .toast {
-            position: fixed; bottom: 74px; left: 50%; transform: translateX(-50%);
-            z-index: 400;
-            background: var(--glass-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px; padding: 9px 20px;
-            font-size: 13px; color: #fff;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.4);
-            opacity: 0; transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
-            pointer-events: none;
-        }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        /* 模式切换标签（升级） */
-        .mode-tabs {
-            position: fixed; bottom: 22px; right: 22px; z-index: 50;
-            display: flex; gap: 4px;
-            background: rgba(15, 23, 42, 0.65);
+        /* 目标标签 */
+        .goal-badge {
+            position: fixed; bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            background: linear-gradient(135deg, rgba(165,94,234,0.15), rgba(96,165,250,0.12));
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(96,165,250,0.18);
-            border-radius: 14px; padding: 5px;
-            box-shadow:
-                0 4px 20px rgba(0,0,0,0.3),
-                0 0 0 1px rgba(255,255,255,0.04),
-                inset 0 1px 0 rgba(255,255,255,0.05);
+            border: 1px solid rgba(165,94,234,0.25);
+            border-radius: 30px;
+            padding: 10px 24px;
+            font-size: 13px; color: rgba(255,255,255,0.75);
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
         }
-        .mode-tab {
-            padding: 8px 18px; border-radius: 10px; border: none;
-            background: transparent; color: rgba(255,255,255,0.5);
-            font-size: 12.5px; font-weight: 600; cursor: pointer;
-            transition: all 0.35s var(--ease); letter-spacing: 0.3px;
-        }
-        .mode-tab.active {
-            background: linear-gradient(135deg, rgba(96,165,250,0.25), rgba(34,211,238,0.15));
-            color: #fff;
-            box-shadow:
-                0 0 14px rgba(96,165,250,0.2),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            text-shadow: 0 0 10px rgba(255,255,255,0.2);
-        }
-        .mode-tab:hover:not(.active) { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.06); }
+        .goal-badge strong { color: #a55eea; font-weight: 700; }
     </style>
-<link rel="stylesheet" href="assets/techfx.css">
+    <link rel="stylesheet" href="assets/techfx.css">
 </head>
 <body>
 
@@ -368,19 +242,19 @@
     <a href="channels.html">🎯 频道</a>
 </div>
 
-<!-- 技能池面板 -->
-<button class="pool-toggle-btn" id="poolToggle" title="展开技能池" onclick="togglePool()">☰</button>
-<div class="pool-panel" id="poolPanel">
+<!-- 技能池参考面板 -->
+<div class="skill-pool">
     <div class="pool-header">
-        <h3>✨ 技能池</h3>
-        <span style="font-size:12px;color:rgba(255,255,255,0.4)">点击添加到图谱</span>
+        <span class="menu-icon">☰</span>
+        <h3>技能池</h3>
+        <span class="subtitle">学习路线参考</span>
     </div>
     <div class="pool-search">
-        <input type="text" id="poolSearch" placeholder="搜索技能..." autocomplete="off">
+        <input type="text" id="poolSearch" placeholder="搜索技能...">
     </div>
     <div class="pool-list" id="poolList"></div>
-    <div class="pool-stats">
-        <span>已添加: <span class="pool-count" id="addedCount">0</span></span>
+    <div class="pool-footer">
+        <span>已掌握: <span class="count-learned" id="learnedCount">0</span></span>
         <span>共 <span id="totalCount">0</span> 项</span>
     </div>
 </div>
@@ -396,26 +270,6 @@
     <div class="legend-item"><div class="legend-dot" style="background:#26de81;color:#26de81"></div><span>软技能</span></div>
 </div>
 
-<!-- 控制按钮 -->
-<div class="controls">
-    <button onclick="resetZoom()">⟲ 重置视图</button>
-    <button onclick="toggleAnimation()">⏸ 暂停 / 继续</button>
-    <button class="danger" onclick="clearGraph()">🗑 清空图谱</button>
-</div>
-
-<!-- 模式切换 -->
-<div class="mode-tabs">
-    <button class="mode-tab active" data-mode="demo" onclick="switchMode('demo',this)">演示案例</button>
-    <button class="mode-tab" data-mode="custom" onclick="switchMode('custom',this)">自由编辑</button>
-</div>
-
-<!-- 右键菜单 -->
-<div class="ctx-menu" id="ctxMenu">
-    <div class="ctx-item" id="ctxInfo">ℹ️ 详情</div>
-    <div class="ctx-divider"></div>
-    <div class="ctx-item danger" id="ctxRemove">🗑 从图谱中移除</div>
-</div>
-
 <!-- Tooltip / Loading -->
 <div class="tooltip" id="tooltip"></div>
 <div class="loading" id="loading">
@@ -423,111 +277,107 @@
     <div>正在点亮星系...</div>
 </div>
 <div id="graph"></div>
-<div class="toast" id="toast"></div>
+
+<!-- 目标标签 -->
+<div class="goal-badge">🎯 学习目标：<strong>AI Java 后端工程师</strong>（结合 AI 工具编程）</div>
 
 
 <script>
 /* ================================================================
-   数据定义 —— 内嵌，不依赖 fetch，GitHub Pages 稳定加载
+   数据定义
+
+   【如何添加新技能】学会一个新技能，分两步：
+
+   Step 1 — 在下方 SKILLS 数组里加一条（已掌握的才加到这里）：
+     { id: "新技能名", group: "分类", level: 掌握程度(0-100), desc: "简短描述" },
+
+     group 可选值：lang / frontend / backend / devops / ai / soft
+
+   Step 2 — 如果新技能和已有技能有关联，在 LINKS 数组里加一条：
+     ["已有技能名", "新技能名"],
+
+   改完保存 → git push → 等 1~2 分钟 GitHub Pages 构建完即上线。
    ================================================================ */
-const SKILL_POOL = [
-    // ---- 编程语言 ----
-    { id: "JavaScript", group: "lang", level: 90, desc: "ES6+，异步编程，闭包，原型链，事件循环" },
-    { id: "Python",      group: "lang", level: 85, desc: "数据分析，自动化脚本，Flask/FastAPI" },
-    { id: "Java",        group: "lang", level: 75, desc: "Spring Boot，多线程，JVM 调优基础" },
-    { id: "C/C++",       group: "lang", level: 70, desc: "数据结构，算法竞赛，系统编程基础" },
-    { id: "SQL",         group: "lang", level: 80, desc: "复杂查询优化，索引设计，事务管理" },
-    { id: "HTML/CSS",    group: "lang", level: 95, desc: "语义化标签，Flex/Grid，响应式设计，CSS 动画" },
-    { id: "Go",          group: "lang", level: 62, desc: "Goroutine，Channel，微服务并发编程" },
-    { id: "Rust",        group: "lang", level: 48, desc: "所有权模型，零成本抽象，安全内存管理" },
 
-    // ---- 前端开发 ----
-    { id: "React",       group: "frontend", level: 85, desc: "Hooks，Redux，Next.js，性能优化" },
-    { id: "Vue.js",      group: "frontend", level: 80, desc: "Vue3 Composition API，Pinia，Nuxt.js" },
-    { id: "D3.js",       group: "frontend", level: 75, desc: "数据可视化，力导向图，交互式图表" },
-    { id: "Tailwind",    group: "frontend", level: 90, desc: "原子化 CSS，自定义主题，响应式工具类" },
-    { id: "TypeScript",  group: "frontend", level: 82, desc: "类型系统，泛型，装饰器，类型推断" },
-    { id: "Webpack/Vite",group: "frontend", level: 78, desc: "打包优化，代码分割，热更新配置" },
-    { id: "Three.js",    group: "frontend", level: 55, desc: "WebGL 3D 渲染，场景构建，光照材质" },
-    { id: "Svelte",      group: "frontend", level: 60, desc: "编译时框架，无虚拟 DOM，轻量组件" },
-
-    // ---- 后端/数据库 ----
-    { id: "Node.js",     group: "backend",  level: 80, desc: "Express/Koa，事件循环，Stream，Buffer" },
-    { id: "Spring Boot", group: "backend",  level: 72, desc: "RESTful API，AOP，事务管理，微服务入门" },
-    { id: "MySQL",       group: "backend",  level: 78, desc: "表设计，慢查询优化，主从复制" },
-    { id: "Redis",       group: "backend",  level: 75, desc: "缓存策略，持久化，分布式锁，Pub/Sub" },
-    { id: "MongoDB",     group: "backend",  level: 65, desc: "文档模型，聚合管道，索引优化" },
-    { id: "Docker",      group: "backend",  level: 70, desc: "容器化，Dockerfile，Compose，镜像优化" },
-    { id: "PostgreSQL",  group: "backend",  level: 68, desc: "JSONB 查询，窗口函数，全文检索" },
-    { id: "GraphQL",     group: "backend",  level: 58, desc: "Schema 设计，Resolver，查询优化" },
-
-    // ---- DevOps/工具 ----
-    { id: "Git",           group: "devops", level: 88, desc: "分支策略，Rebase，Cherry-pick，CI/CD 集成" },
-    { id: "Linux",         group: "devops", level: 82, desc: "Shell 脚本，进程管理，系统调优，网络配置" },
-    { id: "Nginx",         group: "devops", level: 75, desc: "反向代理，负载均衡，SSL，缓存配置" },
-    { id: "GitHub Actions",group: "devops", level: 70, desc: "自动化部署，工作流编排，矩阵构建" },
-    { id: "Kubernetes",    group: "devops", level: 52, desc: "Pod/Service，Helm Chart，集群编排" },
-    { id: "Terraform",     group: "devops", level: 48, desc: "基础设施即代码，Provider，State 管理" },
-    { id: "CI/CD",         group: "devops", level: 76, desc: "流水线设计，自动化测试部署，质量门禁" },
-    { id: "Vim/Neovim",    group: "devops", level: 72, desc: "高效编辑，插件配置，键盘流操作" },
-
-    // ---- AI/数据 ----
-    { id: "机器学习",     group: "ai", level: 60, desc: "监督/无监督学习，特征工程，模型评估" },
-    { id: "深度学习",     group: "ai", level: 55, desc: "CNN，RNN 基础，PyTorch 入门" },
-    { id: "NLP",          group: "ai", level: 58, desc: "文本分类，命名实体识别，Transformer 基础" },
-    { id: "Pandas",       group: "ai", level: 72, desc: "数据清洗，透视表，时间序列处理" },
-    { id: "OpenAI API",   group: "ai", level: 80, desc: "Prompt Engineering，Function Calling，RAG 基础" },
-    { id: "LangChain",    group: "ai", level: 62, desc: "Chain 构建模板，Agent，Memory 管理" },
-    { id: "向量数据库",   group: "ai", level: 56, desc: "Embedding 存储，相似度搜索，RAG 向量层" },
-    { id: "数据可视化",   group: "ai", level: 73, desc: "ECharts/Matplotlib，图表选择，叙事性可视化" },
+// ── 已掌握的技能（图谱中实际显示的节点） ──
+const SKILLS = [
+    // ---- DevOps/工具 ────（其他编程语言/技术先不展示，学会一个加一个）
+    { id: "Git",         group: "devops",    level: 88, desc: "分支策略，Rebase，Cherry-pick，CI/CD 集成" },
 
     // ---- 软技能 ----
-    { id: "技术写作",   group: "soft", level: 85, desc: "技术博客，文档编写，知识沉淀" },
-    { id: "项目管理",   group: "soft", level: 70, desc: "敏捷开发，任务拆解，进度把控" },
-    { id: "团队协作",   group: "soft", level: 88, desc: "Code Review，技术分享，跨部门沟通" },
-    { id: "问题解决",   group: "soft", level: 90, desc: "Debug 思路，根因分析，系统性思维" },
-    { id: "英语读写",   group: "soft", level: 75, desc: "技术文档阅读，英文博客撰写，国际协作" },
-    { id: "公开演讲",   group: "soft", level: 68, desc: "技术分享会，PPT 制作，表达与感染力" }
+    { id: "技术写作",    group: "soft",      level: 85, desc: "技术博客，文档编写，知识沉淀" },
+    { id: "问题解决",    group: "soft",      level: 88, desc: "Debug 思路，根因分析，系统性思维" },
+    { id: "团队协作",    group: "soft",      level: 80, desc: "Code Review，技术分享，跨部门沟通" }
 ];
 
-/* 连线关系规则：source → target 表示「source 是 target 的前置依赖或关联」*/
-const LINK_RULES = [
-    ["JavaScript","TypeScript"], ["JavaScript","HTML/CSS"],["JavaScript","Node.js"],
-    ["Python","机器学习"], ["Python","Pandas"], ["Python","NLP"],
-    ["Java","Spring Boot"],
-    ["SQL","MySQL"], ["SQL","Redis"], ["SQL","MongoDB"],
-    ["React","TypeScript"], ["React","Webpack/Vite"], ["React","D3.js"],
-    ["Vue.js","TypeScript"], ["Vue.js","Webpack/Vite"],
-    ["Tailwind","HTML/CSS"], ["HTML/CSS","D3.js"],
-    ["Node.js","Docker"], ["Node.js","GraphQL"],
-    ["Spring Boot","MySQL"], ["Spring Boot","Redis"], ["Spring Boot","Docker"],
-    ["MySQL","PostgreSQL"], ["Redis","MongoDB"],
-    ["Docker","Kubernetes"], ["Docker","Nginx"],
-    ["Git","GitHub Actions"], ["Git","CI/CD"], ["Git","Linux"],
-    ["Linux","Nginx"], ["Linux","Docker"], ["Linux","Vim/Neovim"],
-    ["机器学习","深度学习"], ["机器学习","Pandas"],
-    ["深度学习","NLP"], ["NLP","OpenAI API"],
-    ["OpenAI API","LangChain"], ["LangChain","向量数据库"],
-    ["Pandas","数据可视化"],
-    ["技术写作","团队协作"], ["团队协作","项目管理"],
-    ["问题解决","技术写作"], ["问题解决","团队协作"],
-    ["Go","Docker"], ["Rust","Docker"],
-    ["Three.js","WebGL"] || ["Three.js","React"],
-    ["Svelte","TypeScript"],
-    ["Terraform","Kubernetes"]
+// ── 连线关系：source → target 表示「source 是 target 的前置依赖或关联」 ──
+// 注：除了下面这些，中心节点 binqi 还会自动连线到每个已掌握的技能
+const LINKS = [
+    ["问题解决","技术写作"],
+    ["问题解决","团队协作"],
+    ["技术写作","团队协作"]
 ];
 
-/* 演示案例预加载 ID 列表 */
-const DEMO_IDS = new Set([
-    "binqi",
-    "JavaScript","Python","Java","SQL","HTML/CSS",
-    "React","Vue.js","Tailwind","TypeScript","Webpack/Vite",
-    "Node.js","Spring Boot","MySQL","Redis","Docker",
-    "Git","Linux","Nginx","GitHub Actions",
-    "机器学习","Pandas","OpenAI API",
-    "技术写作","团队协作","问题解决"
-]);
+/*
+ * ── 技能池完整列表（含未学习的，仅用于左侧参考面板显示） ──
+ *
+ * 这个数组包含「已掌握」+「计划学习」的全部技能。
+ * 只有 SKILLS 数组里的才会渲染到图谱中；这里的只是侧栏参考。
+ * 学会后从 SKILL_POOL 复制一条到上方 SKILLS 数组即可。
+ */
+const SKILL_POOL = [
+    // ═══ 编程语言 ═══
+    { id: "Java",         group: "lang" },
+    { id: "JavaScript",   group: "lang" },
+    { id: "Python",       group: "lang" },
+    { id: "SQL",          group: "lang" },
+    { id: "HTML/CSS",     group: "lang" },
+    { id: "TypeScript",   group: "lang" },       // 📌 计划学
+    { id: "Go",           group: "lang" },        // 📌 计划学
+    { id: "C/C++",        group: "lang" },        // 📌 计划学
 
+    // ═══ 前端开发 ═══
+    { id: "React",        group: "frontend" },    // 📌 计划学
+    { id: "Vue.js",       group: "frontend" },    // 📌 计划学
+    { id: "Tailwind",     group: "frontend" },    // 📌 计划学
+
+    // ═══ 后端/数据库 ═══
+    { id: "Spring Boot",  group: "backend" },
+    { id: "MySQL",        group: "backend" },
+    { id: "Redis",        group: "backend" },
+    { id: "Node.js",      group: "backend" },
+    { id: "MyBatis",      group: "backend" },     // 📌 计划学
+    { id: "MongoDB",      group: "backend" },     // 📌 计划学
+    { id: "RabbitMQ",     group: "backend" },     // 📌 计划学
+    { id: "Elasticsearch",group: "backend" },     // 📌 计划学
+
+    // ═══ DevOps/工具 ═══
+    { id: "Git",          group: "devops" },
+    { id: "Linux",        group: "devops" },
+    { id: "Docker",       group: "devops" },
+    { id: "Nginx",        group: "devops" },      // 📌 计划学
+    { id: "Kubernetes",   group: "devops" },      // 📌 计划学
+    { id: "GitHub Actions",group:"devops" },      // 📌 计划学
+    { id: "CI/CD",        group: "devops" },      // 📌 计划学
+    { id: "Terraform",    group: "devops" },      // 📌 计划学
+    { id: "Vim/Neovim",   group: "devops" },      // 📌 计划学
+
+    // ═══ AI/数据 ═══
+    { id: "OpenAI API",   group: "ai" },
+    { id: "机器学习",      group: "ai" },
+    { id: "深度学习",      group: "ai" },         // 📌 计划学
+    { id: "NLP",          group: "ai" },          // 📌 计划学
+    { id: "LangChain",    group: "ai" },          // 📌 计划学
+    { id: "RAG",          group: "ai" },          // 📌 计划学
+    { id: "向量数据库",    group: "ai" },          // 📌 计划学
+    { id: "Pandas",       group: "ai" },          // 📌 计划学
+
+    // ═══ 软技能 ═══
+    { id: "技术写作",      group: "soft" },
+    { id: "问题解决",      group: "soft" },
+    { id: "团队协作",      group: "soft" },
+    { id: "英语读写",      group: "soft" }         // 📌 计划学
+];
 
 /* ==================== 配色 ==================== */
 const colors = {
@@ -538,12 +388,47 @@ const groupNames = {
     lang:"编程语言", frontend:"前端开发", backend:"后端/数据库",
     devops:"DevOps/工具", ai:"AI/数据", soft:"软技能", center:"核心"
 };
-const GROUP_ORDER = ["lang","frontend","backend","devops","ai","soft"];
+const groupOrder = ["lang","frontend","backend","devops","ai","soft"];
 
 function lighten(hex, amt) {
     const c=hex.replace('#',''), r=parseInt(c.slice(0,2),16), g=parseInt(c.slice(2,4),16), b=parseInt(c.slice(4,6),16);
     return `rgb(${Math.round(r+(255-r)*amt)},${Math.round(g+(255-g)*amt)},${Math.round(b+(255-b)*amt)})`;
 }
+
+
+/* ==================== 构建技能池侧栏 ==================== */
+const learnedSet = new Set(SKILLS.map(s => s.id));
+
+function buildPool(filterText) {
+    const list = document.getElementById("poolList");
+    const ft = (filterText || "").toLowerCase().trim();
+    let html = "";
+    let learnedCnt = 0;
+
+    for (const grp of groupOrder) {
+        const items = SKILL_POOL.filter(s => s.group === grp &&
+            (!ft || s.id.toLowerCase().includes(ft)));
+        if (items.length === 0 && ft) continue;
+
+        html += `<div class="pool-group-label">${groupNames[grp]}</div>`;
+        for (const item of items) {
+            const isLearned = learnedSet.has(item.id);
+            if (isLearned) learnedCnt++;
+            html += `<div class="pool-item" data-id="${item.id}">
+                <div class="pool-dot" style="background:${colors[item.group]};color:${colors[item.group]}"></div>
+                <span class="pool-name">${item.id}</span>
+                <span class="pool-status ${isLearned ? 'status-learned' : 'status-planned'}">${isLearned ? '✓ 已掌握' : '待学习'}</span>
+            </div>`;
+        }
+    }
+
+    list.innerHTML = html;
+    document.getElementById("learnedCount").textContent = learnedCnt;
+    document.getElementById("totalCount").textContent = SKILL_POOL.length;
+}
+
+document.getElementById("poolSearch").addEventListener("input", e => buildPool(e.target.value));
+buildPool(); // 初始渲染
 
 
 /* ==================== 星空画布 ==================== */
@@ -577,17 +462,34 @@ initStars(); requestAnimationFrame(drawStars);
 window.addEventListener('resize',initStars);
 
 
-/* ==================== 全局状态 ==================== */
-let currentMode = "demo";   // demo | custom
-let activeNodes = [];       // 当前图谱中的节点
-let activeLinks = [];       // 当前图谱中的连线
-let simulation, linkSel, nodeSel;
-let ctxTarget = null;
+/* ==================== 构建节点与连线 ==================== */
+const centerNode = { id:"binqi", group:"center", level:100, desc:"AI Java 后端工程师 | 热爱技术，持续学习" };
+const nodes = [centerNode, ...SKILLS];
+const nodeMap = new Map(nodes.map(n => [n.id, n]));
 
+const links = LINKS.map(([srcId, tgtId]) => ({
+    source: nodeMap.get(srcId),
+    target: nodeMap.get(tgtId)
+})).filter(l => l.source && l.target);
+
+// 每个技能都连向中心
+SKILLS.forEach(s => {
+    links.push({ source: centerNode, target: s });
+});
+
+function neighbors(id){
+    const set=new Set([id]);
+    links.forEach(l=>{
+        if(l.source.id===id)set.add(l.target.id);
+        if(l.target.id===id)set.add(l.source.id);
+    });
+    return set;
+}
+
+
+/* ==================== SVG 初始化与渲染 ==================== */
 const W=window.innerWidth, H=window.innerHeight;
 
-
-/* ==================== SVG 初始化 ==================== */
 const svg=d3.select("#graph").append("svg")
     .attr("width",W).attr("height",H)
     .attr("viewBox",[-W/2,-H/2,W,H]);
@@ -615,304 +517,104 @@ const zoom=d3.zoom().scaleExtent([.15,4]).on("zoom",(e)=>g.attr("transform",e.tr
 svg.call(zoom);
 
 const tooltip=d3.select("#tooltip");
-const ctxMenu=d3.select("#ctxMenu");
 
+// 连线
+const linkSel=g.append("g").selectAll("line")
+    .data(links).join("line")
+    .attr("class","link")
+    .attr("stroke-width", d=>
+        (d.source.group==="center"||d.target.group==="center")?2.5:1);
 
-/* ==================== 技能池渲染 ==================== */
-function renderPool(filterText=""){
-    const listEl=document.getElementById("poolList");
-    const term=(filterText||"").toLowerCase();
-    const activeIds=new Set(activeNodes.map(n=>n.id));
+// 节点
+const nodeSel=g.append("g").selectAll("g")
+    .data(nodes).join("g")
+    .attr("class","node")
+    .call(d3.drag()
+        .on("start",(e,d)=>{
+            if(!e.active)simulation.alphaTarget(.3).restart();
+            d.fx=d.x; d.fy=d.y;
+        })
+        .on("drag",(e,d)=>{ d.fx=e.x; d.fy=e.y; })
+        .on("end",(e,d)=>{
+            if(!e.active)simulation.alphaTarget(0);
+            d.fx=null; d.fy=null;
+        }));
 
-    let html="";
-    for(const grp of GROUP_ORDER){
-        const items=SKILL_POOL.filter(s=>s.group===grp && (!term||s.id.toLowerCase().includes(term)));
-        if(items.length===0 && !term) continue;
-        html+=`<div class="pool-group-label">${groupNames[grp]}</div>`;
-        items.forEach(s=>{
-            const inG=activeIds.has(s.id);
-            html+=`<div class="pool-item ${inG?'in-graph':''}" data-id="${s.id}" onclick="addSkill('${s.id}')">
-                <div class="pool-dot" style="background:${colors[s.grp||s.group]};color:${colors[s.grp||s.group]}"></div>
-                <span class="pool-name">${s.id}</span>
-                <span class="pool-add-icon">${inG?'✓':'＋'}</span>
-            </div>`;
-        });
-    }
-    listEl.innerHTML=html;
-    document.getElementById("totalCount").textContent=SKILL_POOL.length;
-    document.getElementById("addedCount").textContent=activeIds.size;
-}
+// 脉冲光环（仅中心）
+nodeSel.filter(d=>d.group==="center")
+    .append("circle").attr("class","pulse-ring").attr("r",46);
+nodeSel.filter(d=>d.group==="center")
+    .append("circle").attr("class","pulse-ring delay").attr("r",46);
 
-document.getElementById("poolSearch").addEventListener("input", e=>renderPool(e.target.value));
+// 节点圆形
+nodeSel.append("circle")
+    .attr("r", d=>d.group==="center"?44:Math.max(17,d.level/4.3))
+    .attr("fill", d=>`url(#grad-${d.group})`)
+    .attr("stroke", d=>colors[d.group])
+    .attr("stroke-width", d=>d.group==="center"?2.5:1.5)
+    .attr("stroke-opacity",0.9);
 
+// 节点文字
+nodeSel.append("text")
+    .attr("dy", d=>d.group==="center"?5:4)
+    .attr("text-anchor","middle")
+    .text(d=>d.id)
+    .style("font-size", d=>d.group==="center"?"15px":"11px")
+    .style("font-weight", d=>d.group==="center"?"700":"500");
 
-/* ==================== 核心工具函数 ==================== */
+// 事件绑定（悬停高亮 + Tooltip）
+nodeSel.on("mouseover", function(event,d){
+    const near=neighbors(d.id);
+    linkSel.classed("dim",l=>!(l.source.id===d.id||l.target.id===d.id))
+          .classed("highlight",l=>l.source.id===d.id||l.target.id===d.id)
+          .attr("stroke",l=>(l.source.id===d.id||l.target.id===d.id)?colors[d.group]:"#fff");
+    nodeSel.classed("dim",n=>!(near.has(n.id)||n.group==="center"))
+           .classed("focus",n=>n.id===d.id);
 
-function buildCenterNode(){
-    return { id:"binqi", group:"center", level:100, desc:"全栈开发工程师 | 热爱技术，持续学习" };
-}
+    tooltip.html(`
+        <h3>${d.id}</h3>
+        <span class="category" style="background:${colors[d.group]}26;color:${colors[d.group]};border:1px solid ${colors[d.group]}66">${groupNames[d.group]}</span>
+        <div class="desc">${d.desc}</div>
+        <div class="level-text">掌握程度: ${d.level}%</div>
+        <div class="level-bar"><div class="level-fill" style="width:${d.level}%;background:${colors[d.group]};color:${colors[d.group]}"></div></div>
+    `);
+    tooltip.style("left",(event.pageX+18)+"px").style("top",(event.pageY-12)+"px").classed("show",true);
+})
+.on("mousemove", event=>{
+    tooltip.style("left",(event.pageX+18)+"px").style("top",(event.pageY-12)+"px");
+})
+.on("mouseout", ()=>{
+    linkSel.classed("dim",false).classed("highlight",false).attr("stroke","#fff");
+    nodeSel.classed("dim",false).classed("focus",false);
+    tooltip.classed("show",false);
+})
+.on("click", ()=>simulation.alpha(.3).restart());
 
-function getSkillData(id){ return SKILL_POOL.find(s=>s.id===id)||null; }
+// 力模拟
+let simulation=d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d=>d.id)
+        .distance(d=>(d.source.group==="center"||d.target.group==="center")?150:95))
+    .force("charge", d3.forceManyBody()
+        .strength(d=>d.group==="center"?-1400:-380))
+    .force("center", d3.forceCenter(0,0))
+    .force("collision", d3.forceCollide()
+        .radius(d=>d.group==="center"?60:38))
+    .force("x", d3.forceX().strength(.045))
+    .force("y", d3.forceY().strength(.045));
 
-function buildLinksForNodes(nodes){
-    const ids=new Set(nodes.map(n=>n.id));
-    return LINK_RULES.filter(([src,tgt])=>ids.has(src)&&ids.has(tgt))
-        .map(([src,tgt])=>{
-            const sn=nodes.find(n=>n.id===src), tn=nodes.find(n=>n.id===tgt);
-            return { source:sn, target:tn };
-        });
-}
-
-function neighbors(id){
-    const set=new Set([id]);
-    activeLinks.forEach(l=>{
-        if(l.source.id===id)set.add(l.target.id);
-        if(l.target.id===id)set.add(l.source.id);
-    });
-    return set;
-}
-
-
-/* ==================== 添加/移除节点 ==================== */
-
-function addSkill(id){
-    const existing=activeNodes.find(n=>n.id===id);
-    if(existing){
-        showToast(`"${id}" 已在图谱中`);
-        focusNode(existing);
-        return;
-    }
-    const skillData=getSkillData(id);
-    if(!skillData)return;
-    // 随机初始位置（靠近中心）
-    const newNode={...skillData, x:-200+Math.random()*400, y:-200+Math.random()*400 };
-    activeNodes.push(newNode);
-    // 计算新增连线
-    activeLinks=buildLinksForNodes(activeNodes);
-    rebuildGraph();
-    renderPool(document.getElementById("poolSearch").value);
-    showToast(`已添加 "${id}" ✨`);
-}
-
-function removeSkill(id){
-    if(id==="binqi"){ showToast("核心节点不可移除"); return; }
-    activeNodes=activeNodes.filter(n=>n.id!==id);
-    activeLinks=buildLinksForNodes(activeNodes);
-    rebuildGraph();
-    renderPool(document.getElementById("poolSearch").value);
-    showToast(`已移除 "${id}"`);
-}
-
-function clearGraph(){
-    if(currentMode==="demo"){ switchMode("custom"); }
-    activeNodes=[buildCenterNode()];
-    activeLinks=[];
-    rebuildGraph();
-    renderPool();
-    showToast("图谱已清空");
-}
-
-
-/* ==================== 图谱重建 ==================== */
-
-function rebuildGraph(){
-    if(simulation) simulation.stop();
-
-    g.selectAll(".link").remove();
-    g.selectAll(".node").remove();
-
-    // 创建连线
-    linkSel=g.append("g").selectAll("line")
-        .data(activeLinks)
-        .join("line")
-        .attr("class","link")
-        .attr("stroke-width", d=>
-            (d.source.group==="center"||d.target.group==="center")?2.5:1);
-
-    // 创建节点
-    nodeSel=g.append("g").selectAll("g")
-        .data(activeNodes)
-        .join("g")
-        .attr("class","node")
-        .call(d3.drag()
-            .on("start",(e,d)=>{
-                if(!e.active)simulation.alphaTarget(.3).restart();
-                d.fx=d.x; d.fy=d.y;
-            })
-            .on("drag",(e,d)=>{ d.fx=e.x; d.fy=e.y; })
-            .on("end",(e,d)=>{
-                if(!e.active)simulation.alphaTarget(0);
-                d.fx=null; d.fy=null;
-            }));
-
-    // 脉冲光环（仅中心）
-    nodeSel.filter(d=>d.group==="center")
-        .append("circle").attr("class","pulse-ring").attr("r",46);
-    nodeSel.filter(d=>d.group==="center")
-        .append("circle").attr("class","pulse-ring delay").attr("r",46);
-
-    // 节点圆形
-    nodeSel.append("circle")
-        .attr("r", d=>d.group==="center"?44:Math.max(17,d.level/4.3))
-        .attr("fill", d=>`url(#grad-${d.group})`)
-        .attr("stroke", d=>colors[d.group])
-        .attr("stroke-width", d=>d.group==="center"?2.5:1.5)
-        .attr("stroke-opacity",0.9)
-        .style("--target-r", d=>(d.group==="center"?44:Math.max(17,d.level/4.3))+"px");
-
-    // 节点文字
-    nodeSel.append("text")
-        .attr("dy", d=>d.group==="center"?5:4)
-        .attr("text-anchor","middle")
-        .text(d=>d.id)
-        .style("font-size", d=>d.group==="center"?"15px":"11px")
-        .style("font-weight", d=>d.group==="center"?"700":"500");
-
-    bindNodeEvents();
-    startSimulation();
-}
-
-function startSimulation(){
-    simulation=d3.forceSimulation(activeNodes)
-        .force("link", d3.forceLink(activeLinks).id(d=>d.id)
-            .distance(d=>(d.source.group==="center"||d.target.group==="center")?150:95))
-        .force("charge", d3.forceManyBody()
-            .strength(d=>d.group==="center"?-1400:-380))
-        .force("center", d3.forceCenter(0,0))
-        .force("collision", d3.forceCollide()
-            .radius(d=>d.group==="center"?60:38))
-        .force("x", d3.forceX().strength(.045))
-        .force("y", d3.forceY().strength(.045));
-
-    simulation.on("tick",()=>{
-        linkSel.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
-              .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
-        nodeSel.attr("transform",d=>`translate(${d.x},${d.y})`);
-    });
-}
-
-function bindNodeEvents(){
-    nodeSel.on("mouseover", function(event,d){
-        const near=neighbors(d.id);
-        linkSel.classed("dim",l=>!(l.source.id===d.id||l.target.id===d.id))
-              .classed("highlight",l=>l.source.id===d.id||l.target.id===d.id)
-              .attr("stroke",l=>(l.source.id===d.id||l.target.id===d.id)?colors[d.group]:"#fff");
-        nodeSel.classed("dim",n=>!(near.has(n.id)||n.group==="center"))
-               .classed("focus",n=>n.id===d.id);
-
-        tooltip.html(`
-            <h3>${d.id}</h3>
-            <span class="category" style="background:${colors[d.group]}26;color:${colors[d.group]};border:1px solid ${colors[d.group]}66">${groupNames[d.group]}</span>
-            <div class="desc">${d.desc}</div>
-            <div class="level-text">掌握程度: ${d.level}%</div>
-            <div class="level-bar"><div class="level-fill" style="width:${d.level}%;background:${colors[d.group]};color:${colors[d.group]}"></div></div>
-            ${d.group!=="center"?'<div class="tip-hint">💡 双击移除此节点 · 拖拽调整位置</div>':'<div class="tip-hint">💡 拖拽调整位置</div>'}
-        `);
-        tooltip.style("left",(event.pageX+18)+"px").style("top",(event.pageY-12)+"px").classed("show",true);
-    })
-    .on("mousemove", event=>{
-        tooltip.style("left",(event.pageX+18)+"px").style("top",(event.pageY-12)+"px");
-    })
-    .on("mouseout", ()=>{
-        linkSel.classed("dim",false).classed("highlight",false).attr("stroke","#fff");
-        nodeSel.classed("dim",false).classed("focus",false);
-        tooltip.classed("show",false);
-    })
-    .on("click", ()=>simulation.alpha(.3).restart())
-    .on("dblclick", (event,d)=>{
-        if(d.group!=="center") removeSkill(d.id);
-    })
-    .on("contextmenu", (event,d)=>{
-        event.preventDefault();
-        ctxTarget=d;
-        ctxMenu.style("left",(event.pageX+4)+"px").style("top",(event.pageY+4)+"px")
-             .classed("show",true);
-    });
-}
-
-// 右键菜单操作
-document.getElementById("ctxRemove").addEventListener("click",()=>{
-    ctxMenu.classed("show",false);
-    if(ctxTarget&&ctxTarget.group!=="center") removeSkill(ctxTarget.id);
+simulation.on("tick",()=>{
+    linkSel.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+          .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+    nodeSel.attr("transform",d=>`translate(${d.x},${d.y})`);
 });
-document.getElementById("ctxInfo").addEventListener("click",()=>{
-    ctxMenu.classed("show",false);
-    // info already shown via hover tooltip
-});
-document.addEventListener("click", e=>{
-    if(!ctxMenu.node().contains(e.target)) ctxMenu.classed("show",false);
-});
-
-
-/* ==================== UI 工具 ==================== */
-
-function togglePool(){
-    const p=document.getElementById("poolPanel"), btn=document.getElementById("poolToggle");
-    p.classList.toggle("collapsed");
-    btn.classList.toggle("hidden", !p.classList.contains("collapsed"));
-}
-
-function switchMode(mode, btn){
-    currentMode=mode;
-    document.querySelectorAll(".mode-tab").forEach(b=>b.classList.remove("active"));
-    if(btn) btn.classList.add("active");
-    if(mode==="demo"){
-        loadDemo();
-    }
-}
-
-function loadDemo(){
-    const center=buildCenterNode();
-    activeNodes=[center];
-    DEMO_IDS.forEach(id=>{
-        if(id!=="binqi"){
-            const sd=getSkillData(id);
-            if(sd) activeNodes.push({...sd});
-        }
-    });
-    activeLinks=buildLinksForNodes(activeNodes);
-    rebuildGraph();
-    renderPool(document.getElementById("poolSearch").value);
-    showToast("已加载演示案例 🌌");
-}
-
-function resetZoom(){
-    svg.transition().duration(750).ease(d3.easeCubicInOut)
-        .call(zoom.transform, d3.zoomIdentity);
-    if(simulation) simulation.alpha(.5).restart();
-}
-
-let isRunning=true;
-function toggleAnimation(){
-    if(simulation){
-        if(isRunning) simulation.stop(); else simulation.restart();
-        isRunning=!isRunning;
-    }
-}
-
-function focusNode(node){
-    // 将视图平滑移动到该节点
-    if(node&&node.x!=null){
-        const t=d3.zoomIdentity.translate(-node.x,-node.y).scale(1.5);
-        svg.transition().duration(500).ease(d3.easeCubicInOut).call(zoom.transform,t);
-    }
-}
-
-let toastTimer=null;
-function showToast(msg){
-    const el=document.getElementById("toast");
-    el.textContent=msg; el.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer=setTimeout(()=>el.classList.remove("show"),2500);
-}
 
 
 /* ==================== 初始化 ==================== */
 setTimeout(()=>{
     document.getElementById("loading").style.display="none";
-    loadDemo();
-    setTimeout(resetZoom,800);
-}, 450);
+    svg.transition().duration(900).ease(d3.easeCubicInOut)
+        .call(zoom.transform, d3.zoomIdentity.scale(0.95));
+}, 500);
 
 window.addEventListener("resize",()=>{
     const w=window.innerWidth, h=window.innerHeight;
